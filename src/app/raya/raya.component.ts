@@ -13,6 +13,23 @@ export class RayaComponent {
   constructor(){
     this.partida=new raya()
   }
+
+  ocuparCelda(row:number,col:number){
+    if(this.puedoPoner(row,col)){
+      this.partida.celdas[row][col]='X'
+    }else{
+
+      
+    }
+  }
+
+  puedoPoner(row:number,col:number):boolean{
+    if(this.partida.celdas[row][col]=='')
+      return true
+    else
+      return false
+    
+  }
 }
 
 
