@@ -35,4 +35,8 @@ export class RegisterComponent {
     }
   )
 }
+
+bindeo(){
+  console.log("hola")
+}
 }

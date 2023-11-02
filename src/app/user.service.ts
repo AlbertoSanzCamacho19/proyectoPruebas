@@ -16,6 +16,6 @@ export class UserService {
       pwd1:usuario.pwd1,
       pwd2:usuario.pwd2
     }
-    return this.client.post<any>("http://localhos:8080/user/register",info)
+    return this.client.post<any>("http://localhost:8080/users/register",info)
   }
 }

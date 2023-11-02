@@ -7,13 +7,15 @@ import { RayaComponent } from './raya/raya.component';
 import { RegisterComponent } from './register/register.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     RayaComponent,
-    RegisterComponent
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
