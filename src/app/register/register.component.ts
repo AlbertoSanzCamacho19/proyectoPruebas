@@ -21,9 +21,11 @@ export class RegisterComponent {
   );
 
   usuario:user;
+  respuestaOK: boolean;
 
   constructor(private userService:UserService){
     this.usuario=new user;
+    this.respuestaOK=false;
   }
 
   onSubmit(){
@@ -34,6 +36,7 @@ export class RegisterComponent {
       console.log(JSON.stringify(data))
     }
   )
+  this.respuestaOK=true;
 }
 
 bindeo(){

@@ -8,6 +8,9 @@ import { RegisterComponent } from './register/register.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
+import { PagosComponent } from './pagos/pagos.component';
+import { ChatComponent } from './chat/chat.component';
+
 
 
 @NgModule({
@@ -15,7 +18,10 @@ import { LoginComponent } from './login/login.component';
     AppComponent,
     RayaComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    PagosComponent,
+    ChatComponent,
+   
   ],
   imports: [
     BrowserModule,

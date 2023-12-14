@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,79 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'clase';
+  position? :GeolocationPosition
+  max?:number
+  min?:number
+  ciudad?:string
+
+  constructor(){
+    
+    navigator.geolocation.getCurrentPosition(
+      position=>{
+        this.position=position
+        console.log(this.position)
+      },
+      error=>{
+        console.log("error al obtener la posicion")
+      }
+      )
+      this.obtenerElTiempo();
+      this.obtenerCiudad();
+      
+  }
+  private obtenerElTiempo(){
+    let self=this
+    let latitud=this.position?.coords?.latitude
+    console.log(latitud)
+    let url="https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/38.9903762%2C%20-3.9203192?unitGroup=metric&include=current&key=G94RAC9R3W3GNMLK7B9B8Q24B&contentType=json"
+    let req=new XMLHttpRequest();
+
+    req.onreadystatechange=function(){
+      if(this.readyState==4){
+        if(this.status>=200 && this.status<400){
+          //todo ok
+          console.log("todo ok")
+          let response=req.response
+          response=JSON.parse(response)
+          
+           self.max=response.days[0].tempmax
+           self.min=response.days[0].tempmin
+        }
+        else{
+          console.log("Error de peticion")
+        }
+      }
+    }
+    
+    req.open("GET",url)
+    req.send()
+  }
+
+  private obtenerCiudad(){
+    let self=this
+    let latitud=this.position?.coords?.latitude
+    console.log(latitud)
+    let url="https://nominatim.openstreetmap.org/reverse?lat=38.9903762&lon=-3.9203192&format=json"
+    let req=new XMLHttpRequest();
+
+    req.onreadystatechange=function(){
+      if(this.readyState==4){
+        if(this.status>=200 && this.status<400){
+          //todo ok
+          console.log("todo ok")
+          let response=req.response
+          response=JSON.parse(response)
+          
+           self.ciudad=response.address.city
+        }
+        else{
+          console.log("Error de peticion")
+        }
+      }
+    }
+    
+    req.open("GET",url)
+    req.send()
+  }
+  
 }

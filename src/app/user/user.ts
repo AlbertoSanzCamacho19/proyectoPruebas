@@ -16,4 +16,8 @@ export class user{
         this.pwd1=pwd1
         this.pwd2=pwd2
     }
+    datosLogin(email:string,pwd1:string){
+        this.email=email
+        this.pwd1=pwd1
+    }
 }
