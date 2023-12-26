@@ -10,6 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { PagosComponent } from './pagos/pagos.component';
 import { ChatComponent } from './chat/chat.component';
+import { MenuComponent } from './menu/menu.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -21,13 +23,15 @@ import { ChatComponent } from './chat/chat.component';
     LoginComponent,
     PagosComponent,
     ChatComponent,
+    MenuComponent,
    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

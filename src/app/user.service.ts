@@ -26,4 +26,15 @@ export class UserService {
     }
     return this.client.put<any>("http://localhost:8080/users/login",info,{withCredentials:true,observe:"response"})
   }
+
+  public getCurrentUser(): user {
+    const userJson = localStorage.getItem("currentUser");
+    return userJson ? JSON.parse(userJson) : null;
+  }
+  public setCurrentUser(user: user): void {
+    localStorage.setItem("currentUser", JSON.stringify(user));
+  }
+  public deleteCurrentUser(): void {
+    localStorage.removeItem("currentUser");
+  }
 }
