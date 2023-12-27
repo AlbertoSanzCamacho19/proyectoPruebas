@@ -1,23 +1,27 @@
 <div class="app-container">
    <div class="personas-container">
+        <h4>JUGADORES CONECTADOS</h4>
         <div class="persona" *ngFor="let persona of per;let i=index">
             <div (click)="chatPersona(i)">{{ persona.getNombre() }}</div>
         </div>
     </div>
 
     <div class="conversaciones-container">
+        <h1>CHAT</h1>
         <div class="hablas">{{nombre}}</div>
         <div class="listamensajes">
-        <div class="mensaje"  *ngFor="let mensaje of mensajes " >
-            {{ mensaje }}
+            <div class="mensaje"  *ngFor="let mensaje of mensajes " >
+                {{ mensaje }}
+            </div>
         </div>
-    </div>
         <div class="enviar-mensaje">
             <form [formGroup]="mensajeForm" (ngSubmit)="onSubmit()">
-                <input text="nuevoMensaje" formControlName="mensaje" name="mensaje" placeholder="Escribe tu mensaje..." />
-                <button type="submit">
-                <i class="fas fa-paper-plane"></i> Enviar
-                </button>
+                <div>
+                    <input class="controls" text="nuevoMensaje" formControlName="mensaje" name="mensaje" placeholder="Escribe tu mensaje..." />
+                    <button class="send-btn" type="submit">
+                        <i class="fas fa-paper-plane"></i> Enviar
+                    </button>
+                </div>
             </form>
         </div>
     </div>

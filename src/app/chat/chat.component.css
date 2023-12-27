@@ -1,9 +1,8 @@
-
-
 .personas-container {
     width: 200px;
-    height: 100%;
     border-right: 1px solid #ccc;
+    border-radius: 10px;
+    background-image: url('/assets/usuarios_conectados.png');
   }
   
   .persona {
@@ -16,11 +15,24 @@
     background-color: #f2f2f2;
   }
 
-
   .conversaciones-container {
     flex: 1;
-    height: 100%;
     flex-direction: column;
+    color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px double #4169E1;
+    background-image: url('/assets/fondo_chat.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+  }
+
+  h1, h4 {
+    text-align: center;
+    color: #000080;
+    font-weight: bold;
   }
   
   .listamensajes {
@@ -31,14 +43,42 @@
     padding: 10px;
     border-bottom: 1px solid #eee;
   }
+  
   .enviar-mensaje {
     position: absolute;
     bottom: 0;
-    width: 100%;
+    /* width: 100%; */
     display: flex;
-    align-items: center;
     padding: 10px;
   }
+
+  .enviar-mensaje input {
+    width: 500px;
+    background: #24303c;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #4169E1;
+    font-family: 'calibri';
+    font-size: 18px;
+    color: white;
+    margin-right: 20px;
+}
+
+  .enviar-mensaje button {
+    width: 100px;
+    background: #000080;
+    border: none;
+    border-radius: 4px;
+    padding: 9px;
+    color: white;
+    margin: 16px 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.enviar-mensaje button:hover {
+  background: #87CEFA;
+}
   
   .input-mensaje {
     flex: 1;
@@ -48,7 +88,9 @@
   button {
     cursor: pointer;
   }
+
   .app-container {
     display: flex;
     height: 100vh;
   }
+
