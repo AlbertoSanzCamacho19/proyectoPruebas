@@ -1,8 +1,19 @@
-<p>raya works!</p>
-
-<div *ngFor="let row of partida.celdas; let i=index">
-    <button (click)="ocuparCelda(i,j)" *ngFor="let col of row; let j=index">
-        <span *ngIf="col">{{col}}</span>
-        <span *ngIf="!col">&nbsp;</span>
-    </button>   
-</div>
+<div class="game-container">
+    <div class="connect-four-board">
+      <div *ngFor="let row of partida.celdas; let i = index" class="row">
+        <button (click)="ocuparCelda(i, j)" *ngFor="let col of row; let j = index" class="cell" [ngClass]="{'red': col === 'X', 'yellow': col === 'O'}">
+          <span *ngIf="col">{{ col }}</span>
+          <span *ngIf="!col">&nbsp;</span>
+        </button>
+      </div>
+    </div>
+    <button (click)="buscarPartida()">Buscar Partida</button>
+  
+    <div class="info-box">
+      <h2>Rival: Alma marla</h2>
+      <p>Victorias: 5</p>
+      <p>Derrotas:3 </p>
+      <!-- Agrega más información según sea necesario -->
+    </div>
+  </div>
+  
