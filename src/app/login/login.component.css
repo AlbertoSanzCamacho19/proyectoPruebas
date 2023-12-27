@@ -25,6 +25,7 @@ h1 {
 
 .msg-required {
     margin-bottom: 16px;
+    color: red;
 }
 
 .controls {
