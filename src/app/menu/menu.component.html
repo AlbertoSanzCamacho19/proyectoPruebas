@@ -1,25 +1,31 @@
-
 <div class="contenedor">
-    <header>
-<div class="logo">
-    <a href="#">Home</a>
-</div>
-<nav id="nav">
-    <ul>
-    <li><a routerLink="Juegos">Jugar al 3 en raya</a></li>
-    <li><a routerLink="Register">Registrarse</a></li>
-    <li *ngIf="loggin"><a routerLink="Pagos">Pagos</a></li>
-    <li><a routerLink="Chat">Chat</a></li>
-    <li><a (click)="mostrarBotones()"><i class="fa-regular fa-user"></i>Usuario</a></li>
-    <div *ngIf="(mostrar && !loggin)">
-        <li><a (click)="ocultar()" routerLink="Register">Registrarse</a></li>
-        <li><a (click)="ocultar()"routerLink="Login">Iniciar Sesion</a></li>
-    </div>
-    <div *ngIf="(loggin && mostrar)">
-        <li><a (click)="desloggear()" routerLink="/"> Salir</a></li>
-        <li><a (click)="desloggear()" routerLink="Login"> Iniciar sesion con otra cuenta</a></li>
-    </div>
-</ul>
-</nav>
-</header>
+    <body>
+        <header>
+            <div class="logo">
+                <h1>
+                    <a href="#">Home</a>
+                </h1>
+            </div>
+        </header>
+        <nav id="nav">
+            <ul>
+                <li><a routerLink="Juegos">Jugar al 3 en raya</a></li>
+                <li *ngIf="loggin"><a routerLink="Pagos">Pagos</a></li>
+                <li><a routerLink="Chat">Chat</a></li>
+                <li><a (click)="mostrarBotones()"><i></i>Usuario</a></li>
+                <div *ngIf="(mostrar && !loggin)">
+                    <li><a (click)="ocultar()" routerLink="Register">Registrarse</a></li>
+                    <li><a (click)="ocultar()"routerLink="Login">Iniciar Sesion</a></li>
+                </div>
+                <div *ngIf="(loggin && mostrar)">
+                    <li><a (click)="desloggear()" routerLink="/"> Salir</a></li>
+                    <li><a (click)="desloggear()" routerLink="Login"> Iniciar sesion con otra cuenta</a></li>
+                </div>
+            </ul>
+            <div class="hide" id="menu-icon">
+                <i class="fa fa-bars" aria-hidden="true"></i> Menu
+            </div>
+        </nav>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </body>
 </div>

@@ -1,21 +1,25 @@
-<p>register works!</p>
+<div class="register-container">
+    <div class="form-register">
+        <h1>FORMULARIO DE REGISTRO</h1>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <label>Nombre Completo: </label>
+            <input class="controls" type="text" formControlName="Nombre">
+            <br>
+            <label>Email: </label>
+            <input class="controls" type="text" formControlName="Email">
+            <br>
+            <label>Contraseña: </label>
+            <input class="controls" type="text" formControlName="Pwd1">
+            <br>
+            <label>Repite Contraseña: </label>
+            <input class="controls" type="text" formControlName="Pwd2">
+            <br>
+        </form>
 
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <label>Nombre completo: </label>
-    <input type="tect" formControlName="Nombre">
-    <br>
-    <label>Email: </label>
-    <input type="text" formControlName="Email">
-    <br>
-    <label>Contresena: </label>
-    <input type="text" formControlName="Pwd1">
-    <br>
-    <label>Repite contrasena: </label>
-    <input type="text" formControlName="Pwd2">
-    <br>
-    <button type="submit">Guardar Datos</button>
-</form>
+        <button class="register-btn" type="submit">Registrar</button><br>
+        <span *ngIf="respuestaOK">Te hemos enviado un email de confirmación</span>
+        <button (click)="bindeo()" >Prueba Bindeo</button>
+    </div>
+</div>
 
-<span *ngIf="respuestaOK">Te hemos enviado un email de confirmación</span>
 
-<button (click)="bindeo()">Prueba Bindeo</button>

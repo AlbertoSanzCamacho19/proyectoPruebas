@@ -40,3 +40,27 @@ constructor(private userService:UserService,private wsService:WSocketService){
     this.loggin=false
     }
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const menu = document.getElementById('menu-icon');
+  const nav = document.getElementById('nav');
+  
+  if (menu && nav) {
+    const navUl = nav.querySelector('ul');
+
+    if (navUl) {
+      menu.addEventListener('click', () => {
+        if (window.getComputedStyle(navUl).display === 'none') {
+          navUl.style.display = 'block';
+        } else {
+          navUl.style.display = 'none';
+        }
+      });
+    } else {
+      console.error('No se encontró la lista del menú');
+    }
+  } else {
+    console.error('No se encontraron el menú o el icono del menú');
+  }
+});

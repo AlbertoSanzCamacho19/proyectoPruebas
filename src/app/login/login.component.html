@@ -1,25 +1,31 @@
-<p>login works!</p>
+<div class="login-container">
+    <div class="form-login">
+        <h1>LOGIN</h1>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <label>Email: </label>
+            <input class="controls" type="text" formControlName="Email" name="Email">
+            <br>
+            <div  *ngIf="this.loginForm.controls['Email'].errors" >
+            <div *ngIf="this.loginForm.controls['Email'].errors?.['required']" class="msg-required">
+                El campo email es obligatorio
+            </div>
+            <div *ngIf="this.loginForm.controls['Email'].errors?.['email']">
+                El email tiene que tener un formato definido
+            </div>
+            </div>
+            <label>Contreseña: </label>
+            <input class="controls" type="password" formControlName="Pwd" name="Pwd">
+            <br>
+            <div  *ngIf="this.loginForm.controls['Pwd'].errors" >
+                <div *ngIf="this.loginForm.controls['Pwd'].errors?.['required']" class="msg-required">
+                    El campo contraseña es obligatorio
+                </div>
+                <div *ngIf="this.loginForm.controls['Pwd'].errors?.['minlength']">La contraseña tiene que tener al menos 6 caracteres
+                </div>
+            </div>
+            <button class="login-btn" type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</button>
+        </form>
+    </div>
+</div>
 
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
-    <label>Email: </label>
-    <input type="text" formControlName="Email" name="Email">
-    <br>
-    <div  *ngIf="this.loginForm.controls['Email'].errors" >
-    <div *ngIf="this.loginForm.controls['Email'].errors?.['required']">El campo email es obligatorio
-    </div>
-    <div *ngIf="this.loginForm.controls['Email'].errors?.['email']">El email tiene que tener un formato definido
-    </div>
-    </div>
-    <label>Contresena: </label>
-    <input type="password" formControlName="Pwd" name="Pwd">
-    <br>
-    <div  *ngIf="this.loginForm.controls['Pwd'].errors" >
-        <div *ngIf="this.loginForm.controls['Pwd'].errors?.['required']">El campo contraseña es obligatorio
-        </div>
-        <div *ngIf="this.loginForm.controls['Pwd'].errors?.['minlength']">La contraseña tiene que tener al menos 6 caracteres
-        </div>
-    </div>
-    <button type="submit" [disabled]="loginForm.invalid">Login</button>
-</form>
 

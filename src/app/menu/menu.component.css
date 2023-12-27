@@ -1,41 +1,69 @@
-.contenedor{
-    background: #1e2326;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Century Gothic', sans-serif;
+}
+
+.logo h1 a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+header {
     width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 99;
-    
+    padding: 15px;
+    text-align: center;
+    background: #000080;
 }
 
-.contenedor header{
-    max-width: 1100px;
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-}
-
-.contenedor header .logo a{
-    font-family: 'Righteous';
-    font-size: 36px;
-    color: #1CB698;
-    text-decoration: none;
-}
-
-.contenedor header ul{
-    display: flex;
+nav ul {
     list-style: none;
+    background: #4169E1;
+    text-align: center;
+    font-weight: bold;
 }
-.contenedor header nav ul li a{
-    font-size: 12px;
-    text-align: none;
-    color: #fff;
-    margin: 0 15px;
-    padding: 3px;
-    transition: .5s;
+
+nav ul li {
+    display: inline-block;
+    padding: 20px;
+    transition: all ease-in-out 250ms;
+}
+
+ul li a {
+    color: white;
     text-decoration: none;
 }
-.contenedor header nav ul li a:hover{
-    color: #1CB698;
+
+nav ul li:hover {
+    background: #000080;
+}
+
+.hide {
+    font-size: 22px;
+    padding: 16px;
+    background-color: #000080;
+    color: white;
+    cursor: pointer;
+    display: none;
+}
+
+@media (max-width: 768px) {
+    ul li {
+        width: 100%;
+        padding: 16px;
+        text-align: left;
+    }
+
+    .hide {
+        display: block;
+    }
+
+    nav ul {
+        display: none;
+    }
 }
