@@ -15,7 +15,7 @@ export class CuatroRService {
 
 
 
-  empezarPartida4R(data:any,header:any): Observable<any>{
-    return this.client.get<any>("http://localhost:8080/matches/start?juego="+data)
+  empezarPartida4R(data:any): Observable<any>{
+    return this.client.get<any>("http://localhost:8080/matches/start?juego="+data,{withCredentials:true,observe:"response"})
   }
 }

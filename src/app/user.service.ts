@@ -27,6 +27,10 @@ export class UserService {
     return this.client.put<any>("http://localhost:8080/users/login",info,{withCredentials:true,observe:"response"})
   }
 
+  sesion():Observable<any>{
+    return this.client.put<any>("http://localhost:8080/users/sesion",{withCredentials:true,observe:"response"})
+  }
+
   public getCurrentUser(): user {
     const userJson = localStorage.getItem("currentUser");
     return userJson ? JSON.parse(userJson) : null;

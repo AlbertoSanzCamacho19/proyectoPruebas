@@ -38,7 +38,6 @@ export class LoginComponent{
     this.usuario.datosLogin(this.loginForm.controls['Email'].value, this.loginForm.controls['Pwd'].value)
     this.userService.login(this.usuario).subscribe(
     result=>{
-    this.ws=new WebSocket("ws://localhost:8080/wsGames?httpId="+result.body.httpId)
     this.wsService.setCurrentSocket(result.body.httpId)
     //const usu=JSON.parse(result.body.user)
     this.userService.setCurrentUser(result.body.user)
