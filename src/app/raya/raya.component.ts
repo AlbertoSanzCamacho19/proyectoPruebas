@@ -147,7 +147,8 @@ export class RayaComponent implements OnInit{
   ocuparCelda(row:number,col:number){
     for(let i=5;i>=0;i--){
       if(this.puedoPoner(i,col)){
-        this.partida.celdas[i][col]='X'
+        this.partida.celdas[i][col]='R'
+        
         break;
       }
     }
