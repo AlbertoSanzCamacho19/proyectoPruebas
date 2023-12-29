@@ -6,13 +6,18 @@
           <span *ngIf="!col">&nbsp;</span>
         </button>
       </div>
-      <button  *ngIf="enPartida==false" (click)="buscarPartida()">Buscar Partida</button>
-      
+      <button *ngIf="BuscarPartida" (click)="buscarPartida()">Buscar Partida</button>
+      <button  *ngIf="enPartida" (click)="cancelarPartida()">Cancelar Partida</button>
     </div>
-
+    <div *ngIf="inicioSesion==false" class="inicio-sesion">
+      <span>aun no has iniciado sesion</span>
+      <button (click)="iniciarSesionInvitado()">Iniciar sesion como invitado</button>
+    </div>
   
     <div class="info-box">
       <h2>Rival: {{this.rival}}</h2>
+      <p>Ciudad: {{this.ciuadRival}}</p>
+      <p>Temperatura: {{this.tiempoRivaul}}</p>
       <p>Victorias: 5</p>
       <p>Derrotas:3 </p>
       <!-- Agrega más información según sea necesario -->

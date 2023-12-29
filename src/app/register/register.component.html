@@ -14,9 +14,10 @@
             <label>Repite Contraseña: </label>
             <input class="controls" type="text" formControlName="Pwd2">
             <br>
+            <button class="register-btn" type="submit">Registrar</button>
         </form>
 
-        <button class="register-btn" type="submit">Registrar</button><br>
+        <br>
         <span *ngIf="respuestaOK">Te hemos enviado un email de confirmación</span>
         <button (click)="bindeo()" >Prueba Bindeo</button>
     </div>

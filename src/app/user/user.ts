@@ -3,8 +3,10 @@ export class user{
     email:string
     pwd1:string
     pwd2:string
+    id:string
 
     constructor(){
+        this.id=""
         this.nombre=""
         this.email=""
         this.pwd1=""

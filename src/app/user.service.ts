@@ -27,8 +27,12 @@ export class UserService {
     return this.client.put<any>("http://localhost:8080/users/login",info,{withCredentials:true,observe:"response"})
   }
 
-  sesion():Observable<any>{
-    return this.client.put<any>("http://localhost:8080/users/sesion",{withCredentials:true,observe:"response"})
+  sesion(usuario:any):Observable<any>{
+    let info={
+      email:usuario.email,
+      pwd:usuario.pwd1
+    }
+    return this.client.put<any>("http://localhost:8080/users/sesion",info,{withCredentials:true,observe:"response"})
   }
 
   public getCurrentUser(): user {
