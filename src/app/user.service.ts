@@ -24,7 +24,8 @@ export class UserService {
       email:usuario.email,
       pwd:usuario.pwd1
     }
-    return this.client.put<any>("http://localhost:8080/users/login",info,{withCredentials:true,observe:"response"})
+    var result = this.client.put<any>("http://localhost:8080/users/login",info,{withCredentials:true,observe:"response"})
+    return result;
   }
 
   sesion(usuario:any):Observable<any>{
@@ -44,5 +45,6 @@ export class UserService {
   }
   public deleteCurrentUser(): void {
     localStorage.removeItem("currentUser");
+    alert("Usuario deslogueado")
   }
 }

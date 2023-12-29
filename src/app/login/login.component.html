@@ -23,6 +23,10 @@
                 <div *ngIf="this.loginForm.controls['Pwd'].errors?.['minlength']">La contraseña tiene que tener al menos 6 caracteres
                 </div>
             </div>
+            <!-- Mensaje de credenciales incorrectas -->
+            <div *ngIf="credencialesIncorrectas" class="msg-incorrectas" style="color: orange;">
+                Credenciales incorrectas. Por favor, verifica tu email y contraseña.
+            </div>
             <button class="login-btn" type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</button>
         </form>
     </div>

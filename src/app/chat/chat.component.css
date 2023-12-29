@@ -9,12 +9,22 @@
     padding: 10px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
-  }
-  
-  .persona:hover {
-    background-color: #f2f2f2;
+    font-size: 14px;
+    font-weight: bold;
+    background: #4169E1;
   }
 
+  .persona:hover {
+    background-color: #87CEFA;
+  }
+
+  .hablas {
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+  }
+  
   .conversaciones-container {
     flex: 1;
     flex-direction: column;
@@ -41,7 +51,8 @@
   }
   .mensaje {
     padding: 10px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #4169E1;
+    color: black;
   }
   
   .enviar-mensaje {

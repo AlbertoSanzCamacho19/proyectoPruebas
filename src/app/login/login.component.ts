@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators,ReactiveFormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { user } from '../user/user';
-import { MenuComponent } from '../menu/menu.component';
 import { WSocketService } from '../w-socket.service';
 
 @Component({
@@ -10,18 +10,17 @@ import { WSocketService } from '../w-socket.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent{
+export class LoginComponent {
 
   loginForm:FormGroup;
+
+  credencialesIncorrectas: boolean = false;
   
   usuario:user;
 
   ws!: WebSocket;
 
-  
- 
-
-  constructor(private formBuilder:FormBuilder,private userService:UserService, private wsService:WSocketService){
+  constructor(private router: Router, private formBuilder:FormBuilder,private userService:UserService, private wsService:WSocketService){
 
     this.loginForm=this.formBuilder.group(
       {
@@ -32,17 +31,24 @@ export class LoginComponent{
       this.usuario=new user
       
   }
-
-
+  
   onSubmit(){
     this.usuario.datosLogin(this.loginForm.controls['Email'].value, this.loginForm.controls['Pwd'].value)
     this.userService.login(this.usuario).subscribe(
-    result=>{
-    this.wsService.setCurrentSocket(result.body.httpId)
-    //const usu=JSON.parse(result.body.user)
-    this.userService.setCurrentUser(result.body.user)
-    alert("Sesion Iniciada con exito")
+    result => {
 
+      if (result.body.user !== null && result.body.token !== null) {
+        this.ws=new WebSocket("ws://localhost:8080/wsGames?httpId="+result.body.httpId)
+        this.wsService.setCurrentSocket(result.body.httpId)
+        //const usu=JSON.parse(result.body.user)
+        this.userService.setCurrentUser(result.body.user)
+        alert("Sesion Iniciada con exito")
+        this.router.navigate(['Juegos'])
+
+      } else {
+        this.credencialesIncorrectas = true;
+        this.loginForm.reset();
+      }
     },
  
     error=>{

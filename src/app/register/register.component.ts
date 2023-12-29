@@ -29,6 +29,7 @@ export class RegisterComponent {
   }
 
   onSubmit(){
+    console.log("Entro")
     console.log(this.registerForm.value)
     this.usuario.datosRegistro(this.registerForm.controls['Nombre'].value,this.registerForm.controls['Email'].value, this.registerForm.controls['Pwd1'].value,this.registerForm.controls['Pwd2'].value);
     this.userService.registrarUsuario(this.usuario).subscribe((data)=>

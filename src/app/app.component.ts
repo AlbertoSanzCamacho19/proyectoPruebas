@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +14,8 @@ export class AppComponent {
   min?:number
   ciudad?:string
 
-  constructor(){
-    
+  constructor(private router: Router){
+
     navigator.geolocation.getCurrentPosition(
       position=>{
         this.position=position
@@ -26,8 +27,13 @@ export class AppComponent {
       )
       this.obtenerElTiempo();
       this.obtenerCiudad();
-      
   }
+
+  // Establecer la ventana al iniciar la aplicación
+  /*ngOnInit() {
+    this.router.navigate(['Login']);
+  }*/
+
   private obtenerElTiempo(){
     let self=this
     let latitud=this.position?.coords?.latitude
