@@ -27,6 +27,7 @@ export class RayaComponent implements OnInit{
   tiempo:number=0
   ciuadRival:string=""
   tiempoRivaul:string=""
+  position? :GeolocationPosition
 
   constructor(private userService:UserService, private cuatroService:CuatroRService,private socketServie:WSocketService,private tiempoService:TiempoService){
     this.partida=new raya()
@@ -37,8 +38,17 @@ export class RayaComponent implements OnInit{
       this.inicioSesion=false
       this.BuscarPartida=false
     }
-    this.ciudad=this.tiempoService.obtenerCiudad()
-    this.tiempo=this.tiempoService.obtenerElTiempo()
+    navigator.geolocation.getCurrentPosition(
+      position=>{
+        this.position=position
+        console.log(this.position)
+      },
+      error=>{
+        console.log("error al obtener la posicion")
+      }
+      )
+      this.obtenerElTiempo();
+      this.obtenerCiudad();
   }
   iniciarSesionInvitado(){
     this.userService.sesion(this.usuario).subscribe(
@@ -101,11 +111,16 @@ export class RayaComponent implements OnInit{
           ciudad: self.ciudad,
           tiempo:self.tiempo.toString()
         }
+        self.ws?.send(JSON.stringify(msg))
       }
       if(data.tipo=="ME VOY"){
         alert("El rival ha abandonado la partida (has ganado)")
         self.rival=""
         self.toca="eres el ganador"
+      }
+      if(data.tipo=="CONFIRMACION PARTIDA"){
+        self.ciuadRival=data.ciudad
+        self.tiempoRivaul=data.tiempo
       }
     }
   }
@@ -146,6 +161,69 @@ export class RayaComponent implements OnInit{
       else{
         return false
       }
+  }
+
+
+
+
+
+
+
+
+  private obtenerElTiempo(){
+    let self=this
+    let latitud=this.position?.coords?.latitude
+    console.log(latitud)
+    let url="https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/38.9903762%2C%20-3.9203192?unitGroup=metric&include=current&key=G94RAC9R3W3GNMLK7B9B8Q24B&contentType=json"
+    let req=new XMLHttpRequest();
+
+    req.onreadystatechange=function(){
+      if(this.readyState==4){
+        if(this.status>=200 && this.status<400){
+          //todo ok
+          console.log("todo ok")
+          let response=req.response
+          response=JSON.parse(response)
+          
+           let max=response.days[0].tempmax
+          let min=response.days[0].tempmin
+          self.tiempo=(max+min)/2
+        }
+        else{
+          console.log("Error de peticion")
+        }
+      }
+    }
+    
+    req.open("GET",url)
+    req.send()
+  }
+
+  private obtenerCiudad(){
+    let self=this
+    let latitud=this.position?.coords?.latitude
+    console.log(latitud)
+    let url="https://nominatim.openstreetmap.org/reverse?lat=38.9903762&lon=-3.9203192&format=json"
+    let req=new XMLHttpRequest();
+
+    req.onreadystatechange=function(){
+      if(this.readyState==4){
+        if(this.status>=200 && this.status<400){
+          //todo ok
+          console.log("todo ok")
+          let response=req.response
+          response=JSON.parse(response)
+          
+           self.ciudad=response.address.city
+        }
+        else{
+          console.log("Error de peticion")
+        }
+      }
+    }
+    
+    req.open("GET",url)
+    req.send()
   }
   
 }

@@ -13,7 +13,8 @@ export class TiempoService {
   constructor() { }
 
   
-  public obtenerElTiempo():number{
+  public obtenerElTiempo(position ?:GeolocationPosition):number{
+    this.position=position
     let self=this
     let latitud=this.position?.coords?.latitude
     console.log(latitud)
@@ -24,12 +25,13 @@ export class TiempoService {
       if(this.readyState==4){
         if(this.status>=200 && this.status<400){
           //todo ok
-          console.log("todo ok")
+          console.log("tiempo accedido con exito")
           let response=req.response
           response=JSON.parse(response)
           
            self.max=response.days[0].tempmax
            self.min=response.days[0].tempmin
+           self.media=(self.min+self.max)/2
         }
         else{
           console.log("Error de peticion")
@@ -37,14 +39,13 @@ export class TiempoService {
       }
       
     }
-    
     req.open("GET",url)
     req.send()
-    this.media=(this.min+this.max)/2
-    return this.media
+    return 0
   }
 
-  public obtenerCiudad():string{
+  public obtenerCiudad(position? :GeolocationPosition):string{
+    this.position=position
     let self=this
     let latitud=this.position?.coords?.latitude
     console.log(latitud)
@@ -55,7 +56,7 @@ export class TiempoService {
       if(this.readyState==4){
         if(this.status>=200 && this.status<400){
           //todo ok
-          console.log("todo ok")
+          console.log("ciudad accedida con exito")
           let response=req.response
           response=JSON.parse(response)
           
@@ -69,6 +70,6 @@ export class TiempoService {
     
     req.open("GET",url)
     req.send()
-    return this.ciudad
+    return self.ciudad
   }
 }
