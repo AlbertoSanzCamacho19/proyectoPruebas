@@ -76,8 +76,10 @@ export class RayaComponent implements OnInit{
         if(data.body.players.length!=2){
           this.rival="esperando rival"
           this.toca=""
+          this.partida.id=data.body.id
         }
         else{
+          this.partida.id=data.body.id
           this.rival=data.body.players[0].nombre
           let msg = {
             tipo : "INICIO PARTIDA",
@@ -148,7 +150,15 @@ export class RayaComponent implements OnInit{
     for(let i=5;i>=0;i--){
       if(this.puedoPoner(i,col)){
         this.partida.celdas[i][col]='R'
-        
+        this.cuatroService.poner(this.partida,col).subscribe(
+          (data)=>{
+            console.log(data)
+            
+          },
+          (error)=>{
+            console.log(error)
+          }
+        )
         break;
       }
     }

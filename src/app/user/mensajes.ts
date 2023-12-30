@@ -1,6 +1,6 @@
 export class mensajes{
     nombre:string
-    mensajes:string[]=['Mensaje1','Mensaje2','Mensaje3'];
+    mensajes:string[]=[];
 
     constructor(nombre:string){
         this.nombre=nombre

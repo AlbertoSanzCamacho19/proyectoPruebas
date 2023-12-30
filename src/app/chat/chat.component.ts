@@ -18,9 +18,6 @@ export class ChatComponent implements OnInit{
   per:mensajes[]=[];
   url?:string
   nuevoMensaje: string = '';
-  persona1= new mensajes('Manuel')
-  persona2= new mensajes('Miguel')
-  persona3= new mensajes('Clara')
   usuario=new user()
   ws?:WebSocket
 
