@@ -27,6 +27,7 @@ export class RayaComponent implements OnInit{
   tiempo:number=0
   ciuadRival:string=""
   tiempoRivaul:string=""
+  jugador:string=""
   position? :GeolocationPosition
 
   constructor(private userService:UserService, private cuatroService:CuatroRService,private socketServie:WSocketService,private tiempoService:TiempoService){
@@ -120,9 +121,20 @@ export class RayaComponent implements OnInit{
         self.rival=""
         self.toca="eres el ganador"
       }
-      if(data.tipo=="CONFIRMACION PARTIDA"){
-        self.ciuadRival=data.ciudad
-        self.tiempoRivaul=data.tiempo
+      if(data.tipo=="PONER ACTUALIZACION"){
+        self.ponerRival(data.columna)
+        self.comporbarTurno(data.turno)
+        if(data.ganador==self.rival){
+          alert("hay ganador y no eres tu, loser")
+        }
+      }
+    }
+  }
+  ponerRival(col:number){
+    for(let i=5;i>=0;i--){
+      if(this.puedoPoner(i,col)){
+        this.partida.celdas[i][col]='A'
+        break;
       }
     }
   }
@@ -149,11 +161,20 @@ export class RayaComponent implements OnInit{
   ocuparCelda(row:number,col:number){
     for(let i=5;i>=0;i--){
       if(this.puedoPoner(i,col)){
-        this.partida.celdas[i][col]='R'
         this.cuatroService.poner(this.partida,col).subscribe(
           (data)=>{
-            console.log(data)
-            
+            if (data.body.ganador==this.useraux.nombre){
+              alert("eres el ganador")
+            }
+            this.comporbarTurno(data.body.jugadorTurno.nombre)
+            this.partida.celdas[i][col]='R'
+            let msg = {
+              tipo : "PONER ACTUALIZACION",
+              destinatario : this.rival,
+              columna:col,
+              ganador:data.body.ganador
+            }
+            this.ws?.send(JSON.stringify(msg))
           },
           (error)=>{
             console.log(error)
