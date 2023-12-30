@@ -6,12 +6,12 @@
             <input class="controls" type="text" formControlName="Email" name="Email">
             <br>
             <div  *ngIf="this.loginForm.controls['Email'].errors" >
-            <div *ngIf="this.loginForm.controls['Email'].errors?.['required']" class="msg-required">
-                El campo email es obligatorio
-            </div>
-            <div *ngIf="this.loginForm.controls['Email'].errors?.['email']">
-                El email tiene que tener un formato definido
-            </div>
+                <div *ngIf="this.loginForm.controls['Email'].errors?.['required']" class="msg-required">
+                    El campo email es obligatorio
+                </div>
+                <div *ngIf="this.loginForm.controls['Email'].errors?.['email']">
+                    El email tiene que tener un formato definido
+                </div>
             </div>
             <label>Contreseña: </label>
             <input class="controls" type="password" formControlName="Pwd" name="Pwd">

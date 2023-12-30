@@ -16,7 +16,8 @@ export class UserService {
       pwd1:usuario.pwd1,
       pwd2:usuario.pwd2
     }
-    return this.client.post<any>("http://localhost:8080/users/register",info)
+    var result = this.client.post<any>("http://localhost:8080/users/register",info)
+    return result;
   }
 
   login(usuario:any):Observable<any>{

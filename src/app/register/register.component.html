@@ -4,23 +4,60 @@
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <label>Nombre Completo: </label>
             <input class="controls" type="text" formControlName="Nombre">
-            <br>
+            <div  *ngIf="this.registerForm.controls['Nombre'].errors" class="msg-required">
+                <div *ngIf="this.registerForm.controls['Nombre'].errors?.['required']" class="msg-required">
+                    El campo Nombre es obligatorio
+                </div>
+                <div *ngIf="this.registerForm.controls['Nombre'].errors?.['minlength']">
+                    El Nombre tiene que tener al menos 5 caracteres
+                </div>
+            </div>
             <label>Email: </label>
             <input class="controls" type="text" formControlName="Email">
-            <br>
+
+            <div  *ngIf="this.registerForm.controls['Email'].errors" class="msg-required">
+                <div *ngIf="this.registerForm.controls['Email'].errors?.['required']" class="msg-required">
+                    El campo Email es obligatorio
+                </div>
+                <div *ngIf="this.registerForm.controls['Email'].errors?.['email']">
+                    El email tiene que tener un formato definido
+                </div>
+            </div>
             <label>Contraseña: </label>
-            <input class="controls" type="text" formControlName="Pwd1">
-            <br>
+            <div class="pass-container">
+                <input class="controls" type="password" formControlName="Pwd1" id="password">
+                <img src="./assets/ojo.png" id="pass-icon" class="icon" (click) ="passVisible()">
+            </div>
+            <div  *ngIf="this.registerForm.controls['Pwd1'].errors" class="msg-required">
+                <div *ngIf="this.registerForm.controls['Pwd1'].errors?.['required']" class="msg-required">
+                    El campo Contraseña es obligatorio
+                </div>
+                <div *ngIf="this.registerForm.controls['Pwd1'].errors?.['minlength']">
+                    La contraseña tiene que tener al menos 6 caracteres
+                </div>
+            </div>
             <label>Repite Contraseña: </label>
-            <input class="controls" type="text" formControlName="Pwd2">
-            <br>
+            <div class="pass-container">
+                <input class="controls" type="password" formControlName="Pwd2" id="password2">
+                <img src="./assets/ojo.png" id="pass-icon2" class="icon" (click) ="passVisible2()">
+            </div>
+            <div  *ngIf="this.registerForm.controls['Pwd2'].errors" class="msg-required">
+                <div *ngIf="this.registerForm.controls['Pwd2'].errors?.['required']" class="msg-required">
+                    El campo Contraseña es obligatorio
+                </div>
+                <div *ngIf="this.registerForm.controls['Pwd2'].errors?.['minlength']">
+                    La contraseña tiene que tener al menos 6 caracteres
+                </div>
+            </div>
+            <div *ngIf="passDiferente" style="color: red;">
+                Las contraseñas no coinciden
+            </div>
             <button class="register-btn" type="submit">Registrar</button>
         </form>
 
         <br>
-        <button class="register-btn" type="submit" (click)="onSubmit()">Registrar</button><br>
-        <span *ngIf="respuestaOK">Te hemos enviado un email de confirmación</span>
-        <button (click)="bindeo()" >Prueba Bindeo</button>
+        <span class="msg-ok" *ngIf="respuestaOK">Te hemos enviado un email de confirmación</span>
+        <span class="msg-error" *ngIf="usuarioExiste">Ya existe un usuario con este correo electrónico</span>
     </div>
 </div>
 
