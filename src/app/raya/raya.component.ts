@@ -13,9 +13,8 @@ import { TiempoService } from '../tiempo.service';
 })
 export class RayaComponent implements OnInit{
   partida:raya
-  rival:string=""
+
   esTuTurno:boolean=false
-  toca:string=""
   ws?:WebSocket
   url?:string
   enPartida:boolean=false
@@ -23,33 +22,36 @@ export class RayaComponent implements OnInit{
   inicioSesion=true
   useraux:user=new user()
   usuario:user=new user()
-  ciudad:string=""
-  tiempo:number=0
-  ciuadRival:string=""
-  tiempoRivaul:string=""
-  jugador:string=""
-  position? :GeolocationPosition
+  latitud ?:number=0
+  position!: GeolocationPosition;
 
   constructor(private userService:UserService, private cuatroService:CuatroRService,private socketServie:WSocketService,private tiempoService:TiempoService){
     this.partida=new raya()
-
-  }
-  ngOnInit(): void {
-    if(this,this.userService.getCurrentUser()==null){
-      this.inicioSesion=false
-      this.BuscarPartida=false
-    }
+    let self=this
     navigator.geolocation.getCurrentPosition(
       position=>{
-        this.position=position
-        console.log(this.position)
+        self.position=position
+         let latitud=this.position?.coords?.latitude
+         let longitud=this.position?.coords?.longitude
+         this.obtenerElTiempo(latitud,longitud);
+         this.obtenerCiudad(latitud, longitud);
+        
       },
       error=>{
         console.log("error al obtener la posicion")
       }
       )
-      this.obtenerElTiempo();
-      this.obtenerCiudad();
+
+  }
+  ngOnInit(): void {
+    if(this.userService.getCurrentUser()==null){
+      this.inicioSesion=false
+      this.BuscarPartida=false
+    }
+    else{
+      this.partida.jugadorNombre=this.userService.getCurrentUser().nombre
+    }
+    
   }
   iniciarSesionInvitado(){
     this.userService.sesion(this.usuario).subscribe(
@@ -57,6 +59,7 @@ export class RayaComponent implements OnInit{
       this.url=result.body.httpId
       this.BuscarPartida=true
       this.useraux=result.body.user
+      this.partida.jugadorNombre=this.useraux.nombre
       },
       error=>{
         console.log(error)
@@ -65,6 +68,7 @@ export class RayaComponent implements OnInit{
   }
 
   buscarPartida(){
+    this.partida.celdas=[['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','','']]
     if(this.userService.getCurrentUser()!=null){
       this.url=this.socketServie.getCurrentSocket()
       this.useraux.nombre=this.userService.getCurrentUser().nombre
@@ -75,20 +79,20 @@ export class RayaComponent implements OnInit{
       this.cuatroService.empezarPartida4R("Tablero4R").subscribe(
       (data)=>{
         if(data.body.players.length!=2){
-          this.rival="esperando rival"
-          this.toca=""
+          this.partida.rivalNombre="esperando rival"
+          this.partida.toca=""
           this.partida.id=data.body.id
         }
         else{
           this.partida.id=data.body.id
-          this.rival=data.body.players[0].nombre
+          this.partida.rivalNombre=data.body.players[0].nombre
           let msg = {
             tipo : "INICIO PARTIDA",
             destinatario : data.body.players[0].nombre,
             id : data.body.players[0].id,
             turno : data.body.jugadorTurno.nombre,
-            ciudad: this.ciudad,
-            tiempo:this.tiempo.toString()
+            ciudad: this.partida.ciudad,
+            tiempo:this.partida.tiempo.toString()
           }
           this.ws?.send(JSON.stringify(msg))
         }
@@ -104,27 +108,31 @@ export class RayaComponent implements OnInit{
     this.ws.onmessage=function(event){
       const data=JSON.parse(event.data)
       if(data.tipo=="INICIO PARTIDA"){
-        self.rival=data.remitente
-        self.tiempoRivaul=data.tiempo
-        self.ciuadRival=data.ciudad
+        self.partida.rivalNombre=data.remitente
+        self.partida.tiempoRival=data.tiempo
+        self.partida.ciudadRival=data.ciudad
         self.comporbarTurno(data.turno)
         let msg = {
           tipo : "CONFIRMACION PARTIDA",
           destinatario : data.remitente,
-          ciudad: self.ciudad,
-          tiempo:self.tiempo.toString()
+          ciudad: self.partida.ciudad,
+          tiempo:self.partida.tiempo.toString()
         }
         self.ws?.send(JSON.stringify(msg))
       }
       if(data.tipo=="ME VOY"){
         alert("El rival ha abandonado la partida (has ganado)")
-        self.rival=""
-        self.toca="eres el ganador"
+        self.partida.rivalNombre=""
+        self.partida.toca="eres el ganador"
+      }
+      if(data.tipo=="CONFIRMACION PARTIDA"){
+        self.partida.ciudadRival=data.ciudad
+        self.partida.tiempoRival=data.tiempo
       }
       if(data.tipo=="PONER ACTUALIZACION"){
         self.ponerRival(data.columna)
         self.comporbarTurno(data.turno)
-        if(data.ganador==self.rival){
+        if(data.ganador==self.partida.rivalNombre){
           alert("hay ganador y no eres tu, loser")
         }
       }
@@ -142,7 +150,7 @@ export class RayaComponent implements OnInit{
   cancelarPartida(){
     let msg = {
       tipo : "ME VOY",
-      destinatario: this.rival
+      destinatario: this.partida.rivalNombre
     }
     this.ws?.send(JSON.stringify(msg))
   }
@@ -150,11 +158,11 @@ export class RayaComponent implements OnInit{
   comporbarTurno(nombre:string){
     if(nombre==this.useraux.nombre){
       this.esTuTurno=false
-      this.toca="Es tu turno"
+      this.partida.toca="Es tu turno"
     }
     else{
       this.esTuTurno=true
-      this.toca="Es el turno de "+this.rival
+      this.partida.toca="Es el turno de "+this.partida.rivalNombre
     }
   }
 
@@ -170,7 +178,7 @@ export class RayaComponent implements OnInit{
             this.partida.celdas[i][col]='R'
             let msg = {
               tipo : "PONER ACTUALIZACION",
-              destinatario : this.rival,
+              destinatario : this.partida.rivalNombre,
               columna:col,
               ganador:data.body.ganador
             }
@@ -202,24 +210,25 @@ export class RayaComponent implements OnInit{
 
 
 
-  private obtenerElTiempo(){
+  private obtenerElTiempo(latitud: number,longitud:number){
     let self=this
-    let latitud=this.position?.coords?.latitude
+    
     console.log(latitud)
-    let url="https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/38.9903762%2C%20-3.9203192?unitGroup=metric&include=current&key=G94RAC9R3W3GNMLK7B9B8Q24B&contentType=json"
+    console.log(longitud)
+    let url="https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"+latitud.toString()+"2%2C%20"+longitud.toString()+"?unitGroup=metric&include=current&key=G94RAC9R3W3GNMLK7B9B8Q24B&contentType=json"
     let req=new XMLHttpRequest();
 
     req.onreadystatechange=function(){
       if(this.readyState==4){
         if(this.status>=200 && this.status<400){
           //todo ok
-          console.log("todo ok")
+          console.log("tempo exito")
           let response=req.response
           response=JSON.parse(response)
           
            let max=response.days[0].tempmax
           let min=response.days[0].tempmin
-          self.tiempo=(max+min)/2
+          self.partida.tiempo=(max+min)/2
         }
         else{
           console.log("Error de peticion")
@@ -231,22 +240,22 @@ export class RayaComponent implements OnInit{
     req.send()
   }
 
-  private obtenerCiudad(){
+  private obtenerCiudad(latitud: number,longitud:number){
     let self=this
-    let latitud=this.position?.coords?.latitude
-    console.log(latitud)
-    let url="https://nominatim.openstreetmap.org/reverse?lat=38.9903762&lon=-3.9203192&format=json"
+    
+    let url="https://nominatim.openstreetmap.org/reverse?lat="+latitud.toString()+"&lon="+longitud.toString()+"&format=json"
     let req=new XMLHttpRequest();
 
     req.onreadystatechange=function(){
       if(this.readyState==4){
         if(this.status>=200 && this.status<400){
           //todo ok
-          console.log("todo ok")
+          console.log("ciudad exito")
           let response=req.response
           response=JSON.parse(response)
           
-           self.ciudad=response.address.city
+           self.partida.ciudad=response.address.city
+           self.partida.ciudad=response.address.town
         }
         else{
           console.log("Error de peticion")

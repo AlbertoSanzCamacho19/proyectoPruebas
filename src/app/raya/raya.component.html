@@ -1,5 +1,19 @@
 <div class="game-container">
+
+  <div class="info-box">
+    <h2>Jugador: {{this.partida.jugadorNombre}}</h2>
+    <p>Ciudad: {{this.partida.ciudad}}</p>
+    <p>Temperatura: {{this.partida.tiempo}}</p>
+    <p>Victorias: {{this.partida.victorias}}</p>
+    <p>Derrotas:{{this.partida.derrotas}} </p>
+    <!-- Agrega más información según sea necesario -->
+    <h2>{{this.partida.toca}}</h2>
+  </div>
     <div class="connect-four-board">
+      <div *ngIf="inicioSesion==false" class="inicio-sesion">
+        <span>aun no has iniciado sesion</span>
+        <button (click)="iniciarSesionInvitado()">Iniciar sesion como invitado</button>
+      </div>
       <div *ngFor="let row of partida.celdas; let i = index" class="row">
         <button (click)="ocuparCelda(i, j)" *ngFor="let col of row; let j = index" class="cell" [ngClass]="{'red': col === 'R', 'yellow': col === 'A'}" [disabled]="esTuTurno">
           <span *ngIf="col">{{ col }}</span>
@@ -9,19 +23,16 @@
       <button *ngIf="BuscarPartida" (click)="buscarPartida()">Buscar Partida</button>
       <button  *ngIf="enPartida" (click)="cancelarPartida()">Cancelar Partida</button>
     </div>
-    <div *ngIf="inicioSesion==false" class="inicio-sesion">
-      <span>aun no has iniciado sesion</span>
-      <button (click)="iniciarSesionInvitado()">Iniciar sesion como invitado</button>
-    </div>
+
   
     <div class="info-box">
-      <h2>Rival: {{this.rival}}</h2>
-      <p>Ciudad: {{this.ciuadRival}}</p>
-      <p>Temperatura: {{this.tiempoRivaul}}</p>
-      <p>Victorias: 5</p>
-      <p>Derrotas:3 </p>
+      <h2>Rival: {{this.partida.rivalNombre}}</h2>
+      <p>Ciudad: {{this.partida.ciudadRival}}</p>
+      <p>Temperatura: {{this.partida.tiempoRival}}</p>
+      <p>Victorias: {{this.partida.victoriasRival}}</p>
+      <p>Derrotas:{{this.partida.derrotasRival}} </p>
       <!-- Agrega más información según sea necesario -->
-      <h2>{{this.toca}}</h2>
+      <h2>{{this.partida.toca}}</h2>
     </div>
   </div>
   

@@ -19,7 +19,6 @@ export class AppComponent {
     navigator.geolocation.getCurrentPosition(
       position=>{
         this.position=position
-        console.log(this.position)
       },
       error=>{
         console.log("error al obtener la posicion")
@@ -45,7 +44,6 @@ export class AppComponent {
       if(this.readyState==4){
         if(this.status>=200 && this.status<400){
           //todo ok
-          console.log("todo ok")
           let response=req.response
           response=JSON.parse(response)
           
@@ -65,7 +63,6 @@ export class AppComponent {
   private obtenerCiudad(){
     let self=this
     let latitud=this.position?.coords?.latitude
-    console.log(latitud)
     let url="https://nominatim.openstreetmap.org/reverse?lat=38.9903762&lon=-3.9203192&format=json"
     let req=new XMLHttpRequest();
 
@@ -73,7 +70,6 @@ export class AppComponent {
       if(this.readyState==4){
         if(this.status>=200 && this.status<400){
           //todo ok
-          console.log("todo ok")
           let response=req.response
           response=JSON.parse(response)
           
