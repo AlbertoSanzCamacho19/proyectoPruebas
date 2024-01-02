@@ -25,7 +25,6 @@ export class RayaComponent implements OnInit{
   inicioSesion=true
   useraux:user=new user()
   usuario:user=new user()
-  latitud ?:number=0
   position!: GeolocationPosition;
   
 
@@ -101,10 +100,10 @@ export class RayaComponent implements OnInit{
             tiempo:this.partida.tiempo.toString()
           }
           this.ws?.send(JSON.stringify(msg))
+          this.comporbarTurno(data.body.jugadorTurno.nombre)
         }
         this.enPartida=true
-        this.comporbarTurno(data.body.jugadorTurno.nombre)
-        let ficha=5-1
+        this.BuscarPartida=false
         this.partida.fichas=(this.partida.fichas-1)
         this.userService.getCurrentUser().paidMatches=(this.userService.getCurrentUser().paidMatches-1)
         
@@ -135,8 +134,8 @@ export class RayaComponent implements OnInit{
       }
       if(data.tipo=="ME VOY"){
         alert("El rival ha abandonado la partida (has ganado)")
-        self.partida.rivalNombre=""
         self.partida.toca="eres el ganador"
+        self.restaurarValores()
       }
       if(data.tipo=="CONFIRMACION PARTIDA"){
         self.partida.ciudadRival=data.ciudad
@@ -144,9 +143,11 @@ export class RayaComponent implements OnInit{
       }
       if(data.tipo=="PONER ACTUALIZACION"){
         self.ponerRival(data.columna)
-        self.comporbarTurno(data.turno)
         if(data.ganador==self.partida.rivalNombre){
           alert("hay ganador y no eres tu, loser")
+          self.enPartida=false
+          self.BuscarPartida=true
+          self.partida.toca="Has perdido"
         }
       }
     }
@@ -166,6 +167,7 @@ export class RayaComponent implements OnInit{
       destinatario: this.partida.rivalNombre
     }
     this.ws?.send(JSON.stringify(msg))
+    this.restaurarValores()
   }
 
   comporbarTurno(nombre:string){
@@ -185,6 +187,9 @@ export class RayaComponent implements OnInit{
         this.cuatroService.poner(this.partida,col).subscribe(
           (data)=>{
             if (data.body.ganador==this.useraux.nombre){
+              this.enPartida=false
+              this.BuscarPartida=true
+              this.partida.toca="Has ganado"
               alert("eres el ganador")
             }
             this.comporbarTurno(data.body.jugadorTurno.nombre)
@@ -222,7 +227,21 @@ export class RayaComponent implements OnInit{
     this.router.navigate(['Pagos'])
   }
 
+  restaurarValores(){
+    this.partida.celdas=[['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','',''],['','','','','','','']]
+    this.partida.id=""
+    this.partida.rivalNombre=""
+    this.partida.ciudadRival=""
+    this.partida.tiempoRival=0
+    this.partida.victoriasRival=0
+    this.partida.derrotasRival=0
+    this.partida.toca=""
 
+    this.esTuTurno=false
+    this.enPartida=false
+    this.BuscarPartida=true
+    this.inicioSesion=true
+  }
 
 
 
