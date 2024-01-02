@@ -1,6 +1,7 @@
 <div class="game-container">
 
   <div class="info-box">
+    <h1 *ngIf="inicioSesion">Fichas: {{this.partida.fichas}}</h1>
     <h2>Jugador: {{this.partida.jugadorNombre}}</h2>
     <p>Ciudad: {{this.partida.ciudad}}</p>
     <p>Temperatura: {{this.partida.tiempo}}</p>
@@ -20,7 +21,7 @@
           <span *ngIf="!col">&nbsp;</span>
         </button>
       </div>
-      <button *ngIf="BuscarPartida" (click)="buscarPartida()">Buscar Partida</button>
+      <button *ngIf="BuscarPartida" (click)="buscarPartida()" >Buscar Partida</button>
       <button  *ngIf="enPartida" (click)="cancelarPartida()">Cancelar Partida</button>
     </div>
 

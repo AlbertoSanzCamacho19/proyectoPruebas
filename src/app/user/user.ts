@@ -4,6 +4,7 @@ export class user{
     pwd1:string
     pwd2:string
     id:string
+    paidMatches:number
 
     constructor(){
         this.id=""
@@ -11,6 +12,7 @@ export class user{
         this.email=""
         this.pwd1=""
         this.pwd2=""
+        this.paidMatches=0
     }
     datosRegistro(nombre:string ,email:string, pwd1:string, pwd2:string){
         this.nombre=nombre

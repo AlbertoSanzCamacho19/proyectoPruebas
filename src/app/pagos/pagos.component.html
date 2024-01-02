@@ -1,21 +1,28 @@
-<p>You have not enough credit. Please, purchase a bonus:</p>
-Choose an offer:<br>
-<input (change)="amount=10" type="radio" name="option" value="10" checked>
-10 matches x 10€<br>
-<input (change)="amount=20" type="radio" name="option" value="20">
-20 matches x 15€<br>
-<button (click)="requestPrepayment()">Go to payment</button>
-
-
-<form id="payment-form" style="display:none">
-    <div id="card-element"></div>
-    <button id="submit">
-    <div class="spinner hidden" id="spinner"></div>
-    <span id="button-text">Pay now</span>
-    </button>
-    <p id="card-error" role="alert"></p>
-    <p class="result-message hidden">
-    Payment succeeded, see the result in your
-    <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
-    </p>
-</form>
+<body>
+    <div id="container">
+      <p>No tienes creditos suficiente, compra un bono para jugar </p>
+      <label>
+        <input (change)="amount=10" type="radio" name="option" value="10" checked>
+        10 partidas x 10€
+      </label>
+      <br>
+      <label>
+        <input (change)="amount=20" type="radio" name="option" value="20">
+        20 partidas x 15€
+      </label>
+      <br>
+      <button (click)="requestPrepayment()">Go to payment</button>
+  
+      <form id="payment-form" style="display:none">
+        <div id="card-element"></div>
+        <button id="submit">
+          <div class="spinner hidden" id="spinner"></div>
+          <span id="button-text">Pay now</span>
+        </button>
+        <p id="card-error" role="alert"></p>
+        <p class="result-message hidden" *ngIf="exitoso">
+          Pago exitoso
+        </p>
+      </form>
+    </div>
+  </body>

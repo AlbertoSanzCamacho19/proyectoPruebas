@@ -9,6 +9,7 @@ declare let Stripe : any;
 })
 export class PagosComponent implements OnInit{
 
+  exitoso:boolean=false
   amount:number=10
   transactionId?:string
   stripe=Stripe("pk_test_51OMohZGg40l4T36NEVKY3jV0UXhHid2ZoitgI75cbRpZpvY53vCBGZu3PNPQRQozbIAG9vZ5IRsvUR5u2OoAM03Q002bWwFVjE")
@@ -79,6 +80,7 @@ export class PagosComponent implements OnInit{
       } else {
       if (response.paymentIntent.status === 'succeeded') {
       alert("Pago exitoso");
+      self.exitoso=true
       self.service.confirm().subscribe({
       next : (response : any) => {
       alert(response)

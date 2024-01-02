@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {raya} from './raya'
 import { UserService } from '../user.service';
 import { CuatroRService } from '../cuatro-r.service';
 import { WSocketService } from '../w-socket.service';
 import { user } from '../user/user';
 import { TiempoService } from '../tiempo.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-raya',
@@ -12,6 +13,8 @@ import { TiempoService } from '../tiempo.service';
   styleUrls: ['./raya.component.css']
 })
 export class RayaComponent implements OnInit{
+
+  @Output() onNotEnoughCredit : EventEmitter<any> = new EventEmitter()
   partida:raya
 
   esTuTurno:boolean=false
@@ -24,8 +27,9 @@ export class RayaComponent implements OnInit{
   usuario:user=new user()
   latitud ?:number=0
   position!: GeolocationPosition;
+  
 
-  constructor(private userService:UserService, private cuatroService:CuatroRService,private socketServie:WSocketService,private tiempoService:TiempoService){
+  constructor(private userService:UserService, private cuatroService:CuatroRService,private socketServie:WSocketService,private tiempoService:TiempoService,private router: Router){
     this.partida=new raya()
     let self=this
     navigator.geolocation.getCurrentPosition(
@@ -44,12 +48,14 @@ export class RayaComponent implements OnInit{
 
   }
   ngOnInit(): void {
+    
     if(this.userService.getCurrentUser()==null){
       this.inicioSesion=false
       this.BuscarPartida=false
     }
     else{
       this.partida.jugadorNombre=this.userService.getCurrentUser().nombre
+      this.partida.fichas=this.userService.getCurrentUser().paidMatches
     }
     
   }
@@ -98,10 +104,17 @@ export class RayaComponent implements OnInit{
         }
         this.enPartida=true
         this.comporbarTurno(data.body.jugadorTurno.nombre)
+        let ficha=5-1
+        this.partida.fichas=(this.partida.fichas-1)
+        this.userService.getCurrentUser().paidMatches=(this.userService.getCurrentUser().paidMatches-1)
         
       },
       (error)=>{
         console.log(error)
+        if(error.error.error=="Bad Request"){
+          this.showPayments()
+        }
+
       }
     )
 
@@ -186,6 +199,7 @@ export class RayaComponent implements OnInit{
           },
           (error)=>{
             console.log(error)
+
           }
         )
         break;
@@ -204,7 +218,9 @@ export class RayaComponent implements OnInit{
   }
 
 
-
+  showPayments(){
+    this.router.navigate(['Pagos'])
+  }
 
 
 

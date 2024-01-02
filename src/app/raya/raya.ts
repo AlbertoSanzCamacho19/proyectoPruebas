@@ -12,6 +12,7 @@ export class raya{
     derrotas=0
     derrotasRival=0
     toca:string=""
+    fichas=0
 
     
 
