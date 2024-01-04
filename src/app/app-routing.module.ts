@@ -5,6 +5,7 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { PagosComponent } from './pagos/pagos.component';
 import { ChatComponent } from './chat/chat.component';
+import { CambioPasswordComponent } from './password/cambioPassword.component';
 import { MenuComponent } from './menu/menu.component';
 
 const routes: Routes = [
@@ -13,7 +14,8 @@ const routes: Routes = [
   {path:'Login',component:LoginComponent},
   {path:'Pagos',component:PagosComponent},
   {path:'Chat',component:ChatComponent},
-  {path:'Menu',component:MenuComponent}
+  {path:'Menu',component:MenuComponent},
+  {path:'CambioPassword',component:CambioPasswordComponent},
 ];
 
 @NgModule({

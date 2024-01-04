@@ -5,7 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RayaComponent } from './raya/raya.component';
 import { RegisterComponent } from './register/register.component';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CambioPasswordComponent } from './password/cambioPassword.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { PagosComponent } from './pagos/pagos.component';
@@ -24,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     PagosComponent,
     ChatComponent,
     MenuComponent,
+    CambioPasswordComponent,
    
   ],
   imports: [

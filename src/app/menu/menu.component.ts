@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { WSocketService } from '../w-socket.service';
+import { SessionService } from '../session.service';
 
 
 @Component({
@@ -11,34 +12,42 @@ import { WSocketService } from '../w-socket.service';
 export class MenuComponent{
 
 
-constructor(private userService:UserService,private wsService:WSocketService){
+constructor(private userService:UserService,private wsService:WSocketService, private sessionService: SessionService){
 
 }
 
   mostrar=false
   loggin=false
 
-  mostrarBotones(){
+  mostrarBtns() {
     if(this.mostrar){
       this.mostrar=false
     }
     else{
-      if(this.userService.getCurrentUser()!=null){
+      if (this.userService.getCurrentUser() != null){
         this.loggin=true
       }
       this.mostrar=true
     }
   }
+
   ocultar(){
     this.mostrar=false
   }
 
+  // Función que te muestra la opción Chat en el menú
+  mostrarChat() {
+    return this.sessionService.isLoggedIn();
+  }
+
   desloggear() {
     this.ocultar()
+    // Para ocultar el Chat cuando el usuario se desloguea.
+    this.sessionService.logout()
     this.userService.deleteCurrentUser()
     this.wsService.deleteCurrentSocket()
     this.loggin=false
-    }
+  }
 }
 
 
