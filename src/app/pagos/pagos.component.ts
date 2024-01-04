@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PagosService } from '../pagos.service';
+import { UserService } from '../user.service';
 declare let Stripe : any;
 
 @Component({
@@ -15,7 +16,7 @@ export class PagosComponent implements OnInit{
   stripe=Stripe("pk_test_51OMohZGg40l4T36NEVKY3jV0UXhHid2ZoitgI75cbRpZpvY53vCBGZu3PNPQRQozbIAG9vZ5IRsvUR5u2OoAM03Q002bWwFVjE")
   service:PagosService;
 
-  constructor(private PagosService:PagosService){
+  constructor(private PagosService:PagosService,private userService:UserService){
     this.service=PagosService
   }
   ngOnInit(): void {
@@ -83,6 +84,8 @@ export class PagosComponent implements OnInit{
       self.exitoso=true
       self.service.confirm().subscribe({
       next : (response : any) => {
+        let actual=self.userService.getCurrentUser().paidMatches
+        self.userService.getCurrentUser().paidMatches=actual+self.amount
       alert(response)
       },
       error : (response : any) => {
