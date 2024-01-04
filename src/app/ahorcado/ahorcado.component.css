@@ -1,0 +1,22 @@
+/* ahorcado.component.css */
+.game-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .player {
+    text-align: center;
+    margin-right: 300px;
+    margin-left: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ecf0f1;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .ahorcado {
+    margin-top: 10px;
+  }
+
+  
+  

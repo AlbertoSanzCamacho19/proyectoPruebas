@@ -13,6 +13,7 @@ import { PagosComponent } from './pagos/pagos.component';
 import { ChatComponent } from './chat/chat.component';
 import { MenuComponent } from './menu/menu.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AhorcadoComponent } from './ahorcado/ahorcado.component';
 
 
 
@@ -26,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ChatComponent,
     MenuComponent,
     CambioPasswordComponent,
+    AhorcadoComponent,
    
   ],
   imports: [

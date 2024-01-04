@@ -1,0 +1,30 @@
+<!-- ahorcado.component.html -->
+<div class="game-container">
+    <div class="player">
+        <div *ngIf="inicioSesion==false" class="inicio-sesion">
+            <span>aun no has iniciado sesion</span>
+            <button (click)="iniciarSesionInvitado()">Iniciar sesion como invitado</button>
+        </div>
+        <h1 *ngIf="inicioSesion">Fichas: {{this.partida.fichas}}</h1>  
+      <h2>Jugador: {{this.partida.jugadorNombre}}</h2>
+      <p>{{ this.partida.palabraJugador1 }}</p>
+      <div class="ahorcado">
+        <!-- Aquí va la representación visual del ahorcado para el Jugador 1 -->
+        <!-- Puedes usar imágenes o cualquier otro método que prefieras -->
+        <img src="ahorcado_jugador1.png" alt="Ahorcado Jugador 1">
+      </div>
+      <button *ngIf="BuscarPartida" (click)="buscarPartida()" >Buscar Partida</button>
+      <button  *ngIf="enPartida" (click)="cancelarPartida()">Cancelar Partida</button>
+    </div>
+  
+    <div class="player">
+      <h2>Jugador: {{this.partida.rivalNombre}}</h2>
+      <p>{{ this.partida.palabraJugador2 }}</p>
+      <div class="ahorcado">
+        <!-- Aquí va la representación visual del ahorcado para el Jugador 2 -->
+        <!-- Puedes usar imágenes o cualquier otro método que prefieras -->
+        <img src="ahorcado_jugador2.png" alt="Ahorcado Jugador 2">
+      </div>
+    </div>
+  </div>
+  

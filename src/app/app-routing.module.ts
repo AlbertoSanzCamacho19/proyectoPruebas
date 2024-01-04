@@ -7,6 +7,7 @@ import { PagosComponent } from './pagos/pagos.component';
 import { ChatComponent } from './chat/chat.component';
 import { CambioPasswordComponent } from './password/cambioPassword.component';
 import { MenuComponent } from './menu/menu.component';
+import { AhorcadoComponent } from './ahorcado/ahorcado.component';
 
 const routes: Routes = [
   {path:'Juegos',component: RayaComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path:'Chat',component:ChatComponent},
   {path:'Menu',component:MenuComponent},
   {path:'CambioPassword',component:CambioPasswordComponent},
+  {path:'Ahorcado',component:AhorcadoComponent}
 ];
 
 @NgModule({

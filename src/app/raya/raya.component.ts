@@ -81,7 +81,7 @@ export class RayaComponent implements OnInit{
     
     this.ws=new WebSocket("ws://localhost:8080/wsGames?httpId="+this.url)
     let self=this
-      this.cuatroService.empezarPartida4R("Tablero4R").subscribe(
+      this.cuatroService.empezarPartida4R("Tablero4R","").subscribe(
       (data)=>{
         if(data.body.players.length!=2){
           this.partida.rivalNombre="esperando rival"
@@ -143,6 +143,7 @@ export class RayaComponent implements OnInit{
       }
       if(data.tipo=="PONER ACTUALIZACION"){
         self.ponerRival(data.columna)
+        self.comporbarTurno(data.turno)
         if(data.ganador==self.partida.rivalNombre){
           alert("hay ganador y no eres tu, loser")
           self.enPartida=false

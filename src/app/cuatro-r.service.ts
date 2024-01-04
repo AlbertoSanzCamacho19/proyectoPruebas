@@ -13,8 +13,9 @@ export class CuatroRService {
 
   constructor(private client:HttpClient){ }
 
-  empezarPartida4R(data:any): Observable<any>{
-    return this.client.get<any>("http://localhost:8080/matches/start?juego="+data,{withCredentials:true,observe:"response"})
+  empezarPartida4R(juego:any,palabra:any): Observable<any>{
+
+    return this.client.get<any>("http://localhost:8080/matches/start?juego="+juego+"&palabra="+palabra,{withCredentials:true,observe:"response"})
   }
 
   poner(raya:raya,col:number): Observable<any>{
