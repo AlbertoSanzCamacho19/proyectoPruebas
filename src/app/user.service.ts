@@ -29,6 +29,15 @@ export class UserService {
     return result;
   }
 
+  cambioPass(usuario:any):Observable<any> {
+    let info = {
+      pwd1: usuario.pwd1,
+      pwd2: usuario.pwd2,
+    }
+    var result = this.client.put<any>("http://localhost:8080/users/changePassword",info,{withCredentials:true,observe:"response"})
+    return result;
+  }
+
   sesion(usuario:any):Observable<any>{
     let info={
       email:usuario.email,
@@ -41,6 +50,7 @@ export class UserService {
     const userJson = localStorage.getItem("currentUser");
     return userJson ? JSON.parse(userJson) : null;
   }
+
   public setCurrentUser(user: user): void {
     localStorage.setItem("currentUser", JSON.stringify(user));
   }

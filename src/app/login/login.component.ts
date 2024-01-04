@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { user } from '../user/user';
 import { WSocketService } from '../w-socket.service';
+import { SessionService } from '../session.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent {
 
   ws!: WebSocket;
 
-  constructor(private router: Router, private formBuilder:FormBuilder,private userService:UserService, private wsService:WSocketService){
+  constructor(private router: Router, private formBuilder:FormBuilder,private userService:UserService, private wsService:WSocketService, private sessionService: SessionService){
 
     this.loginForm=this.formBuilder.group(
       {
@@ -43,6 +44,9 @@ export class LoginComponent {
         //const usu=JSON.parse(result.body.user)
         this.userService.setCurrentUser(result.body.user)
         alert("Sesion Iniciada con exito")
+        
+        // Establecer el estado de la sesión
+        this.sessionService.setLoggedIn(true);
         this.router.navigate(['Juegos'])
 
       } else {
