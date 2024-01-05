@@ -81,7 +81,7 @@ export class RayaComponent implements OnInit{
     
     this.ws=new WebSocket("ws://localhost:8080/wsGames?httpId="+this.url)
     let self=this
-      this.cuatroService.empezarPartida4R("Tablero4R","").subscribe(
+      this.cuatroService.empezarPartida4R("Tablero4R").subscribe(
       (data)=>{
         if(data.body.players.length!=2){
           this.partida.rivalNombre="esperando rival"

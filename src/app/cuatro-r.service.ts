@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { UserService } from './user.service';
 import { user } from './user/user';
 import { raya } from './raya/raya';
+import { ahorcado } from './ahorcado/ahorcado';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,9 @@ export class CuatroRService {
 
   constructor(private client:HttpClient){ }
 
-  empezarPartida4R(juego:any,palabra:any): Observable<any>{
+  empezarPartida4R(juego:any): Observable<any>{
 
-    return this.client.get<any>("http://localhost:8080/matches/start?juego="+juego+"&palabra="+palabra,{withCredentials:true,observe:"response"})
+    return this.client.get<any>("http://localhost:8080/matches/start?juego="+juego,{withCredentials:true,observe:"response"})
   }
 
   poner(raya:raya,col:number): Observable<any>{
@@ -23,6 +24,14 @@ export class CuatroRService {
       id:raya.id,
       tablero: raya.celdas,
       columna:col
+    }
+    return this.client.post<any>("http://localhost:8080/matches/poner",info,{withCredentials:true,observe:"response"})
+  }
+
+  ponerA(tablero:ahorcado,letra:string){
+    let info={
+      id:tablero.id,
+      letra:letra
     }
     return this.client.post<any>("http://localhost:8080/matches/poner",info,{withCredentials:true,observe:"response"})
   }
