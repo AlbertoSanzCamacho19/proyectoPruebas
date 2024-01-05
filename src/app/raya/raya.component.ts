@@ -26,6 +26,7 @@ export class RayaComponent implements OnInit{
   useraux:user=new user()
   usuario:user=new user()
   position!: GeolocationPosition;
+  usuarioInvitado:boolean = false;
   
 
   constructor(private userService:UserService, private cuatroService:CuatroRService,private socketServie:WSocketService,private tiempoService:TiempoService,private router: Router){
@@ -58,13 +59,17 @@ export class RayaComponent implements OnInit{
     }
     
   }
+
   iniciarSesionInvitado(){
     this.userService.sesion(this.usuario).subscribe(
       result=>{
-      this.url=result.body.httpId
-      this.BuscarPartida=true
-      this.useraux=result.body.user
-      this.partida.jugadorNombre=this.useraux.nombre
+        if (result != null) {
+          this.url=result.body.httpId
+          this.BuscarPartida=true
+          this.useraux=result.body.user
+          this.partida.jugadorNombre=this.useraux.nombre
+          this.usuarioInvitado = true;
+        }
       },
       error=>{
         console.log(error)

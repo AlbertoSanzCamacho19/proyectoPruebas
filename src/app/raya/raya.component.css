@@ -3,6 +3,35 @@
     display: flex;
     justify-content: space-between;
   }
+
+  .inicio-sesion span{
+    color: red;
+  }
+
+  .board-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .inicio-sesion button {
+    background: #4169E1;
+    border: none;
+    padding: 12px;
+    color: white;
+    margin: 16px 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .inicio-sesion button:hover {
+    background: #87CEFA;
+  }
+
+  .inicio-sesion {
+    text-align: center;
+    margin-bottom: 20px;
+  }
   
   .connect-four-board {
     display: flex;
@@ -44,19 +73,63 @@
   .yellow {
     color: #f39c12;
   }
+
+  .icon-p1, .icon-p2 {
+    width: 100%;
+  }
+  
+  .player {
+    font-size: 18px;
+    color: red;
+  }
+
+  .label-bold {
+    font-weight: bold;
+    color: #4169E1;
+  }
+
+  .info-box h3 img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .info-box h3 {
+    font-size: 23px;
+  }
+
+  .info-box h2 {
+    margin-top: 20px;
+  }
+
+  .board-btn {
+    background: #4169E1;
+    border: none;
+    padding: 12px;
+    color: white;
+    margin: 16px 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .board-btn:hover {
+    background: #87CEFA;
+  }
+
+  .turno-msg {
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 20px;
+  }
   
   .info-box {
     background-color: #ecf0f1;
     padding: 10px;
     border-radius: 10px;
-    text-align: right;
+    text-align: left;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .info-box h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
+    width: 250px;
+    border-radius: 10px;
+    border: 2px double #4169E1;
+  }  
   
   

@@ -1,39 +1,48 @@
 <div class="game-container">
-
   <div class="info-box">
-    <h1 *ngIf="inicioSesion">Fichas: {{this.partida.fichas}}</h1>
-    <h2>Jugador: {{this.partida.jugadorNombre}}</h2>
-    <p>Ciudad: {{this.partida.ciudad}}</p>
-    <p>Temperatura: {{this.partida.tiempo}}</p>
-    <p>Victorias: {{this.partida.victorias}}</p>
-    <p>Derrotas:{{this.partida.derrotas}} </p>
-    <!-- Agrega más información según sea necesario -->
-    <h2>{{this.partida.toca}}</h2>
-  </div>
-    <div class="connect-four-board">
-      <div *ngIf="inicioSesion==false" class="inicio-sesion">
-        <span>aun no has iniciado sesion</span>
-        <button (click)="iniciarSesionInvitado()">Iniciar sesion como invitado</button>
-      </div>
-      <div *ngFor="let row of partida.celdas; let i = index" class="row">
-        <button (click)="ocuparCelda(i, j)" *ngFor="let col of row; let j = index" class="cell" [ngClass]="{'red': col === 'R', 'yellow': col === 'A'}" [disabled]="esTuTurno">
-          <span *ngIf="col">{{ col }}</span>
-          <span *ngIf="!col">&nbsp;</span>
-        </button>
-      </div>
-      <button *ngIf="BuscarPartida" (click)="buscarPartida()" >Buscar Partida</button>
-      <button  *ngIf="enPartida" (click)="cancelarPartida()">Cancelar Partida</button>
-    </div>
+    <img src="./assets/p1.png" alt="Imagen 1" class="icon-p1" />
+    <p class="player">{{this.partida.jugadorNombre}}</p>
+    <h3 *ngIf="inicioSesion">
+      {{ this.partida.fichas }} x <img src="./assets/Ficha_azul.png" alt="Fichas" class="foto-ficha">
+    </h3>
+    <p><span class="label-bold">Ciudad:</span> {{this.partida.ciudad}}</p>
+    <p><span class="label-bold">Temperatura:</span> {{this.partida.tiempo}}</p>
+    <p><span class="label-bold">Victorias:</span> {{this.partida.victorias}}</p>
+    <p><span class="label-bold">Derrotas:</span> {{this.partida.derrotas}}</p>
 
+    <!-- Agrega más información según sea necesario -->
+    <p class="turno-msg">{{this.partida.toca}}</p>
+  </div>
+  <div class="board-container">
+    <div *ngIf="inicioSesion==false" class="inicio-sesion">
+      <span *ngIf="!usuarioInvitado" class="invitado">*Aún no has iniciado sesion*</span>
+      <br>
+      <button (click)="iniciarSesionInvitado()">Iniciar sesion como invitado</button>
+    </div>
+      <div class="connect-four-board">
+        <div *ngFor="let row of partida.celdas; let i = index" class="row">
+          <button (click)="ocuparCelda(i, j)" *ngFor="let col of row; let j = index" class="cell" [ngClass]="{'red': col === 'R', 'yellow': col === 'A'}" [disabled]="esTuTurno">
+            <span *ngIf="col">{{ col }}</span>
+            <span *ngIf="!col">&nbsp;</span>
+          </button>
+        </div>
+        <button *ngIf="BuscarPartida" (click)="buscarPartida()" class="board-btn">Buscar Partida</button>
+        <button  *ngIf="enPartida" (click)="cancelarPartida()" class="board-btn">Cancelar Partida</button>
+      </div>
+  </div>
   
     <div class="info-box">
-      <h2>Rival: {{this.partida.rivalNombre}}</h2>
-      <p>Ciudad: {{this.partida.ciudadRival}}</p>
-      <p>Temperatura: {{this.partida.tiempoRival}}</p>
-      <p>Victorias: {{this.partida.victoriasRival}}</p>
-      <p>Derrotas:{{this.partida.derrotasRival}} </p>
+      <img src="./assets/p2.png" alt="Imagen 2" class="icon-p2" />
+      <h2>{{this.partida.rivalNombre}}</h2>
+      <h3 *ngIf="inicioSesion">
+        ? x <img src="./assets/Ficha_azul.png" alt="Fichas" class="foto-ficha">
+      </h3>
+      <p><span class="label-bold">Ciudad:</span> {{this.partida.ciudadRival}}</p>
+      <p><span class="label-bold">Temperatura:</span> {{this.partida.tiempoRival}}</p>
+      <p><span class="label-bold">Victorias:</span> {{this.partida.victoriasRival}}</p>
+      <p><span class="label-bold">Derrotas:</span> {{this.partida.derrotasRival}}</p>
       <!-- Agrega más información según sea necesario -->
-      <h2>{{this.partida.toca}}</h2>
+      <p class="turno-msg">{{this.partida.toca}}</p>
     </div>
   </div>
   

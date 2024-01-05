@@ -43,7 +43,8 @@ export class UserService {
       email:usuario.email,
       pwd:usuario.pwd1
     }
-    return this.client.put<any>("http://localhost:8080/users/sesion",info,{withCredentials:true,observe:"response"})
+    var result = this.client.put<any>("http://localhost:8080/users/sesion",info,{withCredentials:true,observe:"response"})
+    return result;
   }
 
   public getCurrentUser(): user {
