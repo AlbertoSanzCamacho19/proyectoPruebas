@@ -2,10 +2,11 @@ export class ahorcado{
     id?:string
     jugadorNombre:string=""
     rivalNombre:string=""
-    palabraJugador="hola"
-    palabraRival="holaCaracola"
+    palabraJugador:string[]=[]
+    palabraRival:string[]=[]
     toca:boolean=false
     fichas=0
-    palabraVacia:string=""
+    palabraVacia:string[]=[]
+    palabraVaciaRival:string[]=[]
     constructor(){}
 }

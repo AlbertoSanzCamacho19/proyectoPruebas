@@ -82,13 +82,21 @@ export class AhorcadoComponent implements OnInit{
           this.partida.id=data.body.id
           this.partida.rivalNombre=data.body.players[0].nombre
           this.partida.palabraRival=data.body.palabraJugador1
-          this.partida.palabraJugador=data.body.palabraJugador2
-          const letras=this.partida.palabraJugador.split('')
-          for(const i in letras)  {
-            this.partida.palabraVacia=this.partida.palabraVacia+"_ "
+          let aux1=data.body.palabraJugador1
+          let letras1=aux1.split('')
+          for(let i in letras1)  {
+            this.partida.palabraVaciaRival.push("_")
+          }
+
+
+          let aux=data.body.palabraJugador2
+          let letras=aux.split('')
+          for(let i in letras)  {
+            this.partida.palabraVacia.push("_")
+            this.partida.palabraJugador.push(letras[i])
           }
           this.comprobarTurno(data.body.jugadorTurno.nombre)
-          this.mostrarPalabra('ahorcado-container-rival',data.body.palabraJugador1)
+          this.mostrarPalabra('ahorcado-container-rival',this.partida.palabraVaciaRival)
           this.mostrarPalabra('ahorcado-container',this.partida.palabraVacia)
           let msg = {
             tipo : "INICIO PARTIDA",
@@ -112,17 +120,26 @@ export class AhorcadoComponent implements OnInit{
       const data=JSON.parse(event.data)
       if(data.tipo=="INICIO PARTIDA"){
         self.partida.rivalNombre=data.remitente
+
         self.partida.palabraJugador=data.palabraJugador1
         self.partida.palabraRival=data.palabraJugador2
-        const letras=self.partida.palabraJugador.split('')
-        for(const i in letras)  {
-          self.partida.palabraVacia=self.partida.palabraVacia+"_ "
+        for(let i in self.partida.palabraJugador){
+          self.partida.palabraVacia.push('_')
         }
-        self.mostrarPalabra('ahorcado-container-rival',self.partida.palabraRival)
+
+        self.mostrarPalabra('ahorcado-container-rival',data.palabraJugador2)
         self.mostrarPalabra('ahorcado-container',self.partida.palabraVacia)
         self.comprobarTurno(data.turno)
       }
-
+      
+      if(data.tipo=="PONER ACTUALIZACION"){
+        self.comprobarTurno(data.turno)
+        if(data.ganador==self.partida.rivalNombre){
+          alert("hay ganador y no eres tu, loser")
+          self.enPartida=false
+          self.BuscarPartida=true
+        }
+      }
     }
   }
   
@@ -136,23 +153,42 @@ export class AhorcadoComponent implements OnInit{
   }
 
   onSubmit(){
-    this.cuatroService.ponerA(this.partida,this.letraForm.controls['Letra'].value).subscribe(
+    const letra=this.letraForm.controls['Letra'].value
+    this.cuatroService.ponerA(this.partida,letra).subscribe(
       (data)=>{
         console.log(data)
+        for(let i in this.partida.palabraJugador){
+          if(this.partida.palabraJugador[i]==letra){
+            this.partida.palabraVacia[i]=letra
+          }
+        }
+        this.mostrarPalabra('ahorcado-container',this.partida.palabraVacia)
+        this.comprobarTurno(data.body.jugadorTurno.nombre)
+        let msg = {
+          tipo : "PONER ACTUALIZACION",
+          destinatario : this.partida.rivalNombre,
+          letra:letra,
+          turno:data.body.jugadorTurno.nombre,
+          ganador:data.body.ganador
+        }
+        this.ws?.send(JSON.stringify(msg))
       },
       (error)=>{
         console.log(error)
-
       }
     )
   }
 
 
 
-  mostrarPalabra(elementId:any,word:string){
+  mostrarPalabra(elementId:any,word:string[]){
     const container = document.getElementById(elementId);
-    const letras=word.split('')
+    const letras=word
     if (container) {
+      const spans = container.getElementsByTagName('span');
+    for (let i = spans.length - 1; i >= 0; i--) {
+    container.removeChild(spans[i]);
+    }
     for(const i in letras)  {
       let letterPiece = document.createElement('span');
       letterPiece.innerHTML = letras[i]

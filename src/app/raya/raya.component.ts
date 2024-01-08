@@ -294,9 +294,15 @@ export class RayaComponent implements OnInit{
           console.log("ciudad exito")
           let response=req.response
           response=JSON.parse(response)
-          
-           self.partida.ciudad=response.address.city
-           self.partida.ciudad=response.address.town
+          if(response.address.city!=undefined){
+            self.partida.ciudad=response.address.city
+          }
+          else if(response.address.town!=undefined){
+            self.partida.ciudad=response.address.town
+          }
+          else{
+            self.partida.ciudad="no hay datos"
+          }
         }
         else{
           console.log("Error de peticion")
