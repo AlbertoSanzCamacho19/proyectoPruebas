@@ -28,11 +28,20 @@ export class CuatroRService {
     return this.client.post<any>("http://localhost:8080/matches/poner",info,{withCredentials:true,observe:"response"})
   }
 
+
   ponerA(tablero:ahorcado,letra:string){
     let info={
       id:tablero.id,
       letra:letra
     }
     return this.client.post<any>("http://localhost:8080/matches/poner",info,{withCredentials:true,observe:"response"})
+  }
+
+  resolver(tablero:ahorcado,palabra:string){
+    let info={
+      id:tablero.id,
+      palabra:palabra
+    }
+    return this.client.post<any>("http://localhost:8080/matches/resolver",info,{withCredentials:true,observe:"response"})
   }
 }

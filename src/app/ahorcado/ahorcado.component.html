@@ -10,9 +10,15 @@
       <div class="ahorcado">
 
         <div id="ahorcado-container"></div>
+
+        <div id="malas"></div>
         <form *ngIf="this.partida.toca"  [formGroup]="letraForm" (ngSubmit)="onSubmit()">
           <input class="controls" type="text" formControlName="Letra" name="Letra">
           <button class="login-btn" type="submit">Poner</button>
+        </form>
+        <form *ngIf="this.partida.toca"  [formGroup]="resolverForm" (ngSubmit)="onSubmit2()">
+          <input class="controls" type="text" formControlName="Palabra" name="Palabra">
+          <button class="login-btn" type="submit">Resolver</button>
         </form>
         <div *ngIf="this.partida.toca==false">No es tu turno, mamahuevo</div>
       </div>
@@ -25,8 +31,9 @@
       <div class="ahorcado">
         <div>{{this.partida.palabraRival}}</div>
         <div id="ahorcado-container-rival"></div>
-        <!-- Aquí va la representación visual del ahorcado para el Jugador 2 -->
-        <!-- Puedes usar imágenes o cualquier otro método que prefieras -->
+
+        <div id="malas-rival"></div>
+
         <img src="ahorcado_jugador2.png" alt="Ahorcado Jugador 2">
       </div>
     </div>

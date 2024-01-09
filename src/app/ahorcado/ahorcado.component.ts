@@ -22,6 +22,7 @@ export class AhorcadoComponent implements OnInit{
   url?:string
   socketServie: any;
   letraForm:FormGroup;
+  resolverForm:FormGroup;
 
 
 
@@ -32,6 +33,11 @@ export class AhorcadoComponent implements OnInit{
     this.letraForm=this.formBuilder.group(
       {
         Letra:['',[Validators.required,Validators.maxLength(1)]]
+  
+      },)
+    this.resolverForm=this.formBuilder.group(
+      {
+        Palabra:['',[Validators.required,Validators.maxLength(1)]]
   
       },)
   }
@@ -123,23 +129,51 @@ export class AhorcadoComponent implements OnInit{
 
         self.partida.palabraJugador=data.palabraJugador1
         self.partida.palabraRival=data.palabraJugador2
+        for(let i in self.partida.palabraRival){
+          self.partida.palabraVaciaRival.push('_')
+        }
         for(let i in self.partida.palabraJugador){
           self.partida.palabraVacia.push('_')
         }
 
-        self.mostrarPalabra('ahorcado-container-rival',data.palabraJugador2)
+        self.mostrarPalabra('ahorcado-container-rival',self.partida.palabraVaciaRival)
         self.mostrarPalabra('ahorcado-container',self.partida.palabraVacia)
         self.comprobarTurno(data.turno)
       }
       
       if(data.tipo=="PONER ACTUALIZACION"){
         self.comprobarTurno(data.turno)
+        let buena=false
         if(data.ganador==self.partida.rivalNombre){
           alert("hay ganador y no eres tu, loser")
+          
           self.enPartida=false
           self.BuscarPartida=true
         }
+        else{
+          for(let i in self.partida.palabraRival){
+            if(self.partida.palabraRival[i]==data.letra){
+              self.partida.palabraVaciaRival[i]=data.letra
+              buena=true
+            }
+          }
+          if(buena){
+            self.mostrarPalabra('ahorcado-container-rival',self.partida.palabraVaciaRival)
+          }
+          else{
+            self.ponerMala('malas-rival',data.letra)
+          }
+        }
       }
+    }
+  }
+
+  ponerMala(elementId:any,word:string){
+    const container = document.getElementById(elementId);
+    if (container) {
+      let letterPiece = document.createElement('div');
+      letterPiece.innerHTML = word
+      container.appendChild(letterPiece);
     }
   }
   
@@ -157,12 +191,20 @@ export class AhorcadoComponent implements OnInit{
     this.cuatroService.ponerA(this.partida,letra).subscribe(
       (data)=>{
         console.log(data)
+        let buena=false
         for(let i in this.partida.palabraJugador){
           if(this.partida.palabraJugador[i]==letra){
             this.partida.palabraVacia[i]=letra
+            buena=true
           }
         }
-        this.mostrarPalabra('ahorcado-container',this.partida.palabraVacia)
+        if(buena){
+          this.mostrarPalabra('ahorcado-container',this.partida.palabraVacia)
+        }
+        else{
+          this.ponerMala('malas',letra)
+        }
+        
         this.comprobarTurno(data.body.jugadorTurno.nombre)
         let msg = {
           tipo : "PONER ACTUALIZACION",
@@ -179,6 +221,20 @@ export class AhorcadoComponent implements OnInit{
     )
   }
 
+  onSubmit2(){
+    const palabra=this.resolverForm.controls['Palabra'].value
+    this.cuatroService.resolver(this.partida,palabra).subscribe(
+      (data)=>{
+        console.log(data)
+        if(data.body.ganador==this.partida.jugadorNombre){
+          alert("eres el ganador")
+        }
+      },
+      (error)=>{
+        console.log(error)
+      }
+    )
+  }
 
 
   mostrarPalabra(elementId:any,word:string[]){
