@@ -56,6 +56,10 @@ export class RayaComponent implements OnInit{
     else{
       this.partida.jugadorNombre=this.userService.getCurrentUser().nombre
       this.partida.fichas=this.userService.getCurrentUser().paidMatches
+      // AÑADIR LLAMADAS PARA OBTENER LAS VICTORIAS, DERROTAS Y EMPATES DE LOS JUEGADORES
+      this.partida.victorias=this.userService.getCurrentUser().victorias;
+      this.partida.derrotas=this.userService.getCurrentUser().derrotas;
+      this.partida.empates=this.userService.getCurrentUser().empates;
     }
     
   }
@@ -102,7 +106,10 @@ export class RayaComponent implements OnInit{
             id : data.body.players[0].id,
             turno : data.body.jugadorTurno.nombre,
             ciudad: this.partida.ciudad,
-            tiempo:this.partida.tiempo.toString()
+            tiempo:this.partida.tiempo.toString(),
+            victorias:this.partida.victorias, 
+            derrotas:this.partida.derrotas,
+            empates:this.partida.empates
           }
           this.ws?.send(JSON.stringify(msg))
           this.comporbarTurno(data.body.jugadorTurno.nombre)
@@ -128,12 +135,18 @@ export class RayaComponent implements OnInit{
         self.partida.rivalNombre=data.remitente
         self.partida.tiempoRival=data.tiempo
         self.partida.ciudadRival=data.ciudad
+        self.partida.victoriasRival=data.victorias
+        self.partida.derrotasRival=data.derrotas
+        self.partida.empatesRival=data.empates
         self.comporbarTurno(data.turno)
         let msg = {
           tipo : "CONFIRMACION PARTIDA",
           destinatario : data.remitente,
           ciudad: self.partida.ciudad,
-          tiempo:self.partida.tiempo.toString()
+          tiempo:self.partida.tiempo.toString(),
+          victorias: self.partida.victorias, 
+          derrotas: self.partida.derrotas,
+          empates: self.partida.empates,
         }
         self.ws?.send(JSON.stringify(msg))
       }
@@ -145,6 +158,9 @@ export class RayaComponent implements OnInit{
       if(data.tipo=="CONFIRMACION PARTIDA"){
         self.partida.ciudadRival=data.ciudad
         self.partida.tiempoRival=data.tiempo
+        self.partida.victoriasRival=data.victorias
+        self.partida.derrotasRival=data.derrotas
+        self.partida.empatesRival=data.empates
       }
       if(data.tipo=="PONER ACTUALIZACION"){
         self.ponerRival(data.columna)
