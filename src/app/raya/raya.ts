@@ -11,8 +11,6 @@ export class raya{
     victoriasRival=0
     derrotas=0
     derrotasRival=0
-    empates=0
-    empatesRival=0
     toca:string=""
     fichas=0
 
