@@ -3,7 +3,7 @@
         <h1>FORMULARIO DE REGISTRO</h1>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <label>Nombre Completo: </label>
-            <input class="controls" type="text" formControlName="Nombre">
+            <input class="controls" type="text" formControlName="Nombre" name="Nombre">
             <div  *ngIf="this.registerForm.controls['Nombre'].errors" class="msg-required">
                 <div *ngIf="this.registerForm.controls['Nombre'].errors?.['required']" class="msg-required">
                     El campo Nombre es obligatorio
@@ -13,7 +13,7 @@
                 </div>
             </div>
             <label>Email: </label>
-            <input class="controls" type="text" formControlName="Email">
+            <input class="controls" type="text" formControlName="Email" name="Email">
 
             <div  *ngIf="this.registerForm.controls['Email'].errors" class="msg-required">
                 <div *ngIf="this.registerForm.controls['Email'].errors?.['required']" class="msg-required">
