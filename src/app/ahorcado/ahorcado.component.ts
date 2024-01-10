@@ -116,6 +116,8 @@ export class AhorcadoComponent implements OnInit{
           this.ws?.send(JSON.stringify(msg))
 
         }
+        this.enPartida=true
+        this.BuscarPartida=false
       },
       (error)=>{
         console.log(error)
@@ -193,6 +195,10 @@ export class AhorcadoComponent implements OnInit{
             self.partida.vidasRival=self.partida.vidasRival-1
           }
       }
+      if(data.tipo=="ME VOY"){
+        alert("El rival ha abandonado la partida (has ganado)")
+        self.restaurarValores()
+      }
     }
   }
 
@@ -223,6 +229,8 @@ export class AhorcadoComponent implements OnInit{
           alert("has perdido, te has quedado sin vidas")
           this.mostrarPalabra('ahorcado-container',this.partida.palabraJugador)
           this.mostrarPalabra('ahorcado-container-rival',this.partida.palabraRival)
+          this.enPartida=false
+          this.BuscarPartida=true
         }
         let buena=false
         for(let i in this.partida.palabraJugador){
@@ -263,11 +271,15 @@ export class AhorcadoComponent implements OnInit{
         if(data.body.ganador==this.partida.jugadorNombre){
           alert("eres el ganador")
           this.mostrarPalabra('ahorcado-container',palabra)
+          this.enPartida=false
+          this.BuscarPartida=true
         }
         else if(data.body.ganador==this.partida.rivalNombre){
           alert("has perdido, te has quedado sin vidas")
           this.mostrarPalabra('ahorcado-container',palabra)
           this.mostrarPalabra('ahorcado-container-rival',this.partida.palabraRival)
+          this.enPartida=false
+          this.BuscarPartida=true
         }
         else{
           this.ponerMala('malas',palabra)
@@ -301,13 +313,50 @@ export class AhorcadoComponent implements OnInit{
     }
     for(const i in letras)  {
       let letterPiece = document.createElement('span');
-      letterPiece.innerHTML = letras[i]
+      letterPiece.innerHTML = letras[i]+" "
       container.appendChild(letterPiece);
     }
   }
   }
 
   cancelarPartida(){
+    let msg = {
+      tipo : "ME VOY",
+      destinatario: this.partida.rivalNombre
+    }
+    this.restaurarValores()
+    this.ws?.send(JSON.stringify(msg))
+    alert("Te rindes, pierdes la partida")
+  }
 
+  restaurarValores(){
+    this.enPartida=false
+    this.BuscarPartida=true
+    this.partida.rivalNombre=""
+    this.partida.palabraJugador=[]
+    this.partida.palabraRival=[]
+    this.partida.toca=false
+    this.partida.vidas=10
+    this.partida.vidasRival=10
+    this.partida.palabraVacia=[]
+    this.partida.palabraVaciaRival=[]
+    this.limpiar('ahorcado-container')
+    this.limpiar('malas')
+    this.limpiar('ahorcado-container-rival')
+    this.limpiar('malas-rival')
+  }
+
+  limpiar(elementId:any){
+    const container = document.getElementById(elementId);
+    if (container) {
+      const spans = container.getElementsByTagName('span');
+      for (let i = spans.length - 1; i >= 0; i--) {
+      container.removeChild(spans[i]);
+      }
+      const div = container.getElementsByTagName('div');
+      for (let i = div.length - 1; i >= 0; i--) {
+      container.removeChild(div[i]);
+      }
+    }
   }
 }
