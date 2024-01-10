@@ -5,7 +5,8 @@ export class ahorcado{
     palabraJugador:string[]=[]
     palabraRival:string[]=[]
     toca:boolean=false
-    fichas=0
+    vidas=0
+    vidasRival=0
     palabraVacia:string[]=[]
     palabraVaciaRival:string[]=[]
     constructor(){}

@@ -5,7 +5,7 @@
             <div>aun no has iniciado sesion</div>
             <button (click)="iniciarSesionInvitado()">Iniciar sesion como invitado</button>
         </div>
-        <h1 *ngIf="inicioSesion">Fichas: {{this.partida.fichas}}</h1>  
+        <h1 *ngIf="inicioSesion">Vidas: {{this.partida.vidas}}</h1>  
       <h2>Jugador: {{this.partida.jugadorNombre}}</h2>
       <div class="ahorcado">
 
@@ -27,6 +27,7 @@
     </div>
   
     <div class="player">
+      <h1 *ngIf="inicioSesion">Vidas: {{this.partida.vidasRival}}</h1>
       <h2>Jugador: {{this.partida.rivalNombre}}</h2>
       <div class="ahorcado">
         <div>{{this.partida.palabraRival}}</div>

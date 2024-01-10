@@ -70,10 +70,11 @@ export class AhorcadoComponent implements OnInit{
   }
   buscarPartida(){
     if(this.userService.getCurrentUser()!=null){
-      this.url=this.socketServie.getCurrentSocket()
+      this.url=this.socketService.getCurrentSocket()
       this.useraux.nombre=this.userService.getCurrentUser().nombre
     }
-    
+    this.partida.vidas=10
+    this.partida.vidasRival=10
     this.ws=new WebSocket("ws://localhost:8080/wsAhorcado?httpId="+this.url)
     let self=this
     this.cuatroService.empezarPartida4R("Ahorcado").subscribe(
@@ -146,7 +147,13 @@ export class AhorcadoComponent implements OnInit{
         let buena=false
         if(data.ganador==self.partida.rivalNombre){
           alert("hay ganador y no eres tu, loser")
-          
+          self.enPartida=false
+          self.BuscarPartida=true
+        }
+        else if(data.ganador==self.partida.jugadorNombre){
+          alert("Has ganado, el rival se ha quedado sin vidas")
+          self.ponerMala('malas-rival',data.letra)
+          self.partida.vidasRival=self.partida.vidasRival-1
           self.enPartida=false
           self.BuscarPartida=true
         }
@@ -162,8 +169,29 @@ export class AhorcadoComponent implements OnInit{
           }
           else{
             self.ponerMala('malas-rival',data.letra)
+            self.partida.vidasRival=self.partida.vidasRival-1
           }
         }
+      }
+      if(data.tipo=="RESOLVER"){
+        self.comprobarTurno(data.turno)
+        if(data.ganador==self.partida.rivalNombre){
+          self.mostrarPalabra('ahorcado-container-rival',data.palabra)
+          alert("hay ganador y no eres tu, loser")
+          self.enPartida=false
+          self.BuscarPartida=true
+        }
+        else if(data.ganador==self.partida.jugadorNombre){
+          alert("Has ganado, el rival se ha quedado sin vidas")
+          self.ponerMala('malas-rival',data.letra)
+          self.partida.vidasRival=self.partida.vidasRival-1
+          self.enPartida=false
+          self.BuscarPartida=true
+        }
+        else{
+            self.ponerMala('malas-rival',data.palabra)
+            self.partida.vidasRival=self.partida.vidasRival-1
+          }
       }
     }
   }
@@ -191,6 +219,11 @@ export class AhorcadoComponent implements OnInit{
     this.cuatroService.ponerA(this.partida,letra).subscribe(
       (data)=>{
         console.log(data)
+        if(data.body.ganador==this.partida.rivalNombre){
+          alert("has perdido, te has quedado sin vidas")
+          this.mostrarPalabra('ahorcado-container',this.partida.palabraJugador)
+          this.mostrarPalabra('ahorcado-container-rival',this.partida.palabraRival)
+        }
         let buena=false
         for(let i in this.partida.palabraJugador){
           if(this.partida.palabraJugador[i]==letra){
@@ -203,6 +236,7 @@ export class AhorcadoComponent implements OnInit{
         }
         else{
           this.ponerMala('malas',letra)
+          this.partida.vidas=this.partida.vidas-1
         }
         
         this.comprobarTurno(data.body.jugadorTurno.nombre)
@@ -228,10 +262,30 @@ export class AhorcadoComponent implements OnInit{
         console.log(data)
         if(data.body.ganador==this.partida.jugadorNombre){
           alert("eres el ganador")
+          this.mostrarPalabra('ahorcado-container',palabra)
         }
+        else if(data.body.ganador==this.partida.rivalNombre){
+          alert("has perdido, te has quedado sin vidas")
+          this.mostrarPalabra('ahorcado-container',palabra)
+          this.mostrarPalabra('ahorcado-container-rival',this.partida.palabraRival)
+        }
+        else{
+          this.ponerMala('malas',palabra)
+          this.partida.vidas=this.partida.vidas-1
+        }
+        let msg = {
+          tipo : "RESOLVER",
+          destinatario : this.partida.rivalNombre,
+          palabra:palabra,
+          turno:data.body.jugadorTurno.nombre,
+          ganador:data.body.ganador
+        }
+        this.ws?.send(JSON.stringify(msg))
+        this.comprobarTurno(data.body.jugadorTurno.nombre)
       },
       (error)=>{
         console.log(error)
+        
       }
     )
   }
