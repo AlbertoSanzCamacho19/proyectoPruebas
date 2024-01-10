@@ -67,10 +67,12 @@
   }
   
   .red {
-    color: #e74c3c;
+    background: #e74c3c;
+    color:#e74c3c;
   }
   
   .yellow {
+    background: #f39c12;
     color: #f39c12;
   }
 
