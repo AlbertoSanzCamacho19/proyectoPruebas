@@ -44,4 +44,11 @@ export class CuatroRService {
     }
     return this.client.post<any>("http://localhost:8080/matches/resolver",info,{withCredentials:true,observe:"response"})
   }
+
+  rendirse(tablero:raya){
+    let info={
+      id:tablero.id
+    }
+    return this.client.post<any>("http://localhost:8080/matches/rendirse",info,{withCredentials:true,observe:"response"})
+  }
 }

@@ -91,6 +91,7 @@ export class AhorcadoComponent implements OnInit{
   }
 
   buscarPartida(){
+    this.restaurarValores()
     if(this.userService.getCurrentUser()!=null){
       this.url=this.socketService.getCurrentSocket()
       this.useraux.nombre=this.userService.getCurrentUser().nombre
@@ -173,16 +174,16 @@ export class AhorcadoComponent implements OnInit{
         if(data.ganador==self.partida.rivalNombre){
           alert("hay ganador y no eres tu, loser")
           self.enPartida=false
-          self.restaurarValores()
           self.BuscarPartida=true
+          self.partida.toca=false
         }
         else if(data.ganador==self.partida.jugadorNombre){
           alert("Has ganado, el rival se ha quedado sin vidas")
           self.ponerMala('malas-rival',data.letra)
           self.partida.vidasRival=self.partida.vidasRival-1
           self.enPartida=false
-          self.restaurarValores()
           self.BuscarPartida=true
+          self.partida.toca=false
         }
         else{
           for(let i in self.partida.palabraRival){
@@ -207,16 +208,16 @@ export class AhorcadoComponent implements OnInit{
           self.mostrarPalabra('ahorcado-container-rival',data.palabra)
           alert("hay ganador y no eres tu, loser")
           self.enPartida=false
-          self.restaurarValores()
           self.BuscarPartida=true
+          self.partida.toca=false
         }
         else if(data.ganador==self.partida.jugadorNombre){
           alert("Has ganado, el rival se ha quedado sin vidas")
           self.ponerMala('malas-rival',data.letra)
           self.partida.vidasRival=self.partida.vidasRival-1
           self.enPartida=false
-          self.restaurarValores()
           self.BuscarPartida=true
+          self.partida.toca=false
         }
         else{
             self.ponerMala('malas-rival',data.palabra)
@@ -225,7 +226,6 @@ export class AhorcadoComponent implements OnInit{
       }
       if(data.tipo=="ME VOY"){
         alert("El rival ha abandonado la partida (has ganado)")
-        self.restaurarValores()
       }
     }
   }
@@ -258,7 +258,6 @@ export class AhorcadoComponent implements OnInit{
           this.mostrarPalabra('ahorcado-container',this.partida.palabraJugador)
           this.mostrarPalabra('ahorcado-container-rival',this.partida.palabraRival)
           this.enPartida=false
-          this.restaurarValores()
           this.BuscarPartida=true
         }
         let buena=false
@@ -301,7 +300,6 @@ export class AhorcadoComponent implements OnInit{
           alert("eres el ganador")
           this.mostrarPalabra('ahorcado-container',palabra)
           this.enPartida=false
-          this.restaurarValores()
           this.BuscarPartida=true
         }
         else if(data.body.ganador==this.partida.rivalNombre){
@@ -309,7 +307,6 @@ export class AhorcadoComponent implements OnInit{
           this.mostrarPalabra('ahorcado-container',palabra)
           this.mostrarPalabra('ahorcado-container-rival',this.partida.palabraRival)
           this.enPartida=false
-          this.restaurarValores()
           this.BuscarPartida=true
         }
         else{

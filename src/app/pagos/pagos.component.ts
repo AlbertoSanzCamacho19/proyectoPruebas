@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PagosService } from '../pagos.service';
 import { UserService } from '../user.service';
+import { Router } from '@angular/router';
 declare let Stripe : any;
 
 @Component({
@@ -16,7 +17,7 @@ export class PagosComponent implements OnInit{
   stripe=Stripe("pk_test_51OMohZGg40l4T36NEVKY3jV0UXhHid2ZoitgI75cbRpZpvY53vCBGZu3PNPQRQozbIAG9vZ5IRsvUR5u2OoAM03Q002bWwFVjE")
   service:PagosService;
 
-  constructor(private PagosService:PagosService,private userService:UserService){
+  constructor(private PagosService:PagosService,private userService:UserService,private router: Router){
     this.service=PagosService
   }
   ngOnInit(): void {
@@ -84,9 +85,12 @@ export class PagosComponent implements OnInit{
       self.exitoso=true
       self.service.confirm().subscribe({
       next : (response : any) => {
-        let actual=self.userService.getCurrentUser().paidMatches
-        self.userService.getCurrentUser().paidMatches=actual+self.amount
-      alert(response)
+        console.log(self.amount)
+        let user=self.userService.getCurrentUser()
+        user.paidMatches=user.paidMatches+self.amount
+        self.userService.setCurrentUser(user)
+        alert("has pagado bien")
+        self.router.navigate(['Juegos'])
       },
       error : (response : any) => {
       alert(response)

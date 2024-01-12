@@ -56,6 +56,9 @@ export class RayaComponent implements OnInit{
     else{
       this.partida.jugadorNombre=this.userService.getCurrentUser().nombre
       this.partida.fichas=this.userService.getCurrentUser().paidMatches
+      this.partida.victorias=this.userService.getCurrentUser().victorias;
+      this.partida.derrotas=this.userService.getCurrentUser().derrotas;
+      this.partida.empates=this.userService.getCurrentUser().empates;
     }
     
   }
@@ -82,6 +85,7 @@ export class RayaComponent implements OnInit{
     if(this.userService.getCurrentUser()!=null){
       this.url=this.socketServie.getCurrentSocket()
       this.useraux.nombre=this.userService.getCurrentUser().nombre
+      this.partida.fichas=this.userService.getCurrentUser().paidMatches
     }
     
     this.ws=new WebSocket("ws://localhost:8080/wsGames?httpId="+this.url)
@@ -102,15 +106,22 @@ export class RayaComponent implements OnInit{
             id : data.body.players[0].id,
             turno : data.body.jugadorTurno.nombre,
             ciudad: this.partida.ciudad,
-            tiempo:this.partida.tiempo.toString()
+            tiempo:this.partida.tiempo.toString(),
+            victorias:this.partida.victorias, 
+            derrotas:this.partida.derrotas,
+            empates:this.partida.empates
           }
           this.ws?.send(JSON.stringify(msg))
           this.comporbarTurno(data.body.jugadorTurno.nombre)
         }
         this.enPartida=true
         this.BuscarPartida=false
-        this.partida.fichas=(this.partida.fichas-1)
-        this.userService.getCurrentUser().paidMatches=(this.userService.getCurrentUser().paidMatches-1)
+        if(this.userService.getCurrentUser()!=null){
+          this.partida.fichas=(this.partida.fichas-1)
+          let user=this.userService.getCurrentUser()
+          user.paidMatches=this.userService.getCurrentUser().paidMatches-1
+          this.userService.setCurrentUser(user)
+        }
         
       },
       (error)=>{
@@ -128,12 +139,18 @@ export class RayaComponent implements OnInit{
         self.partida.rivalNombre=data.remitente
         self.partida.tiempoRival=data.tiempo
         self.partida.ciudadRival=data.ciudad
+        self.partida.victoriasRival=data.victorias
+        self.partida.derrotasRival=data.derrotas
+        self.partida.empatesRival=data.empates
         self.comporbarTurno(data.turno)
         let msg = {
           tipo : "CONFIRMACION PARTIDA",
           destinatario : data.remitente,
           ciudad: self.partida.ciudad,
-          tiempo:self.partida.tiempo.toString()
+          tiempo:self.partida.tiempo.toString(),
+          victorias: self.partida.victorias, 
+          derrotas: self.partida.derrotas,
+          empates: self.partida.empates
         }
         self.ws?.send(JSON.stringify(msg))
       }
@@ -141,10 +158,19 @@ export class RayaComponent implements OnInit{
         alert("El rival ha abandonado la partida (has ganado)")
         self.partida.toca="eres el ganador"
         self.restaurarValores()
+        if(self.userService.getCurrentUser()!=null){
+          let user=self.userService.getCurrentUser()
+          user.victorias=user.victorias+1
+          self.userService.setCurrentUser(user)
+        }
+        self.partida.victorias=self.partida.victorias+1
       }
       if(data.tipo=="CONFIRMACION PARTIDA"){
         self.partida.ciudadRival=data.ciudad
         self.partida.tiempoRival=data.tiempo
+        self.partida.victoriasRival=data.victorias
+        self.partida.derrotasRival=data.derrotas
+        self.partida.empatesRival=data.empates
       }
       if(data.tipo=="PONER ACTUALIZACION"){
         self.ponerRival(data.columna)
@@ -154,6 +180,24 @@ export class RayaComponent implements OnInit{
           self.enPartida=false
           self.BuscarPartida=true
           self.partida.toca="Has perdido"
+          if(self.userService.getCurrentUser()!=null){
+            let user=self.userService.getCurrentUser()
+            user.derrotas=user.derrotas+1
+            self.userService.setCurrentUser(user)
+          }
+          self.partida.derrotas=self.partida.derrotas+1
+        }
+        if(data.ganador=="tablas"){
+          alert("Empate, no hay mas casillas que poner")
+          self.enPartida=false
+          self.BuscarPartida=true
+          self.partida.toca="Empate"
+          if(self.userService.getCurrentUser()!=null){
+            let user=self.userService.getCurrentUser()
+            user.empates=user.empates+1
+            self.userService.setCurrentUser(user)
+          }
+          self.partida.empates=self.partida.empates+1
         }
       }
     }
@@ -168,12 +212,26 @@ export class RayaComponent implements OnInit{
   }
 
   cancelarPartida(){
-    let msg = {
-      tipo : "ME VOY",
-      destinatario: this.partida.rivalNombre
-    }
-    this.ws?.send(JSON.stringify(msg))
-    this.restaurarValores()
+    this.cuatroService.rendirse(this.partida).subscribe(
+      (data)=>{
+        let msg = {
+          tipo : "ME VOY",
+          destinatario: this.partida.rivalNombre
+        }
+        if(this.userService.getCurrentUser()!=null){
+          let user=this.userService.getCurrentUser()
+          user.derrotas=user.derrotas+1
+          this.userService.setCurrentUser(user)
+        }
+        this.partida.derrotas=this.partida.derrotas+1
+        this.ws?.send(JSON.stringify(msg))
+        this.restaurarValores()
+      },
+      (error)=>{
+        console.log(error)
+      }
+    )
+
   }
 
   comporbarTurno(nombre:string){
@@ -192,13 +250,31 @@ export class RayaComponent implements OnInit{
       if(this.puedoPoner(i,col)){
         this.cuatroService.poner(this.partida,col).subscribe(
           (data)=>{
+            this.comporbarTurno(data.body.jugadorTurno.nombre)
             if (data.body.ganador==this.useraux.nombre){
               this.enPartida=false
               this.BuscarPartida=true
               this.partida.toca="Has ganado"
+              if(this.userService.getCurrentUser()!=null){
+                let user=this.userService.getCurrentUser()
+                user.victorias=user.victorias+1
+                this.userService.setCurrentUser(user)
+              }
+              this.partida.victorias=this.partida.victorias+1
               alert("eres el ganador")
             }
-            this.comporbarTurno(data.body.jugadorTurno.nombre)
+            if(data.body.ganador=="tablas"){
+              alert("Empate, no hay mas casillas que poner")
+              this.enPartida=false
+              this.BuscarPartida=true
+              this.partida.toca="Empate"
+              if(this.userService.getCurrentUser()!=null){
+                let user=this.userService.getCurrentUser()
+                user.empates=user.empates+1
+                this.userService.setCurrentUser(user)
+              }
+              this.partida.empates=this.partida.empates+1
+            }
             this.partida.celdas[i][col]='R'
             let msg = {
               tipo : "PONER ACTUALIZACION",
