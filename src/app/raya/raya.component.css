@@ -65,6 +65,10 @@
   .cell:hover {
     background-color: #bdc3c7;
   }
+
+  .fichas-container {
+    text-align: center;
+  }
   
   .red {
     background: #e74c3c;

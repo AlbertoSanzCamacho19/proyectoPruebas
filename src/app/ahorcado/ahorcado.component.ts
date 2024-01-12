@@ -24,17 +24,12 @@ export class AhorcadoComponent implements OnInit{
   letraForm:FormGroup;
   resolverForm:FormGroup;
 
-
-
-
-
   constructor(private userService:UserService, private cuatroService:CuatroRService, private socketService:WSocketService,private formBuilder:FormBuilder){
     this.partida=new ahorcado()
-    this.letraForm=this.formBuilder.group(
-      {
-        Letra:['',[Validators.required,Validators.maxLength(1)]]
-  
-      },)
+    this.letraForm = this.formBuilder.group({
+      Letra: ['', [Validators.required]]
+    });
+
     this.resolverForm=this.formBuilder.group(
       {
         Palabra:['',[Validators.required,Validators.maxLength(1)]]
@@ -54,6 +49,32 @@ export class AhorcadoComponent implements OnInit{
     
   }
 
+  // Solo deja poner una letra
+  limitarCaracter(event: any): void {
+    const inputValue: string = event.target.value;
+
+    // Filtrar solo letras
+    const letraFiltrada = inputValue.replace(/[^A-Za-z]/g, '');
+
+    // Actualizar el valor del formulario con la letra filtrada
+    this.letraForm.patchValue({
+      Letra: letraFiltrada.charAt(0)
+    });
+  }
+
+  // Deja poner una palabra sin numéros y caracteres
+  limitarCaracter2(event: any): void {
+    const inputValue: string = event.target.value;
+
+    // Filtrar solo letras y espacios
+    const palabraFiltrada = inputValue.replace(/[^A-Za-z ]/g, '');
+
+    // Actualizar el valor del formulario con la palabra filtrada
+    this.resolverForm.patchValue({
+      Palabra: palabraFiltrada
+    });
+  }
+
   iniciarSesionInvitado(){
     this.userService.sesion(this.usuario).subscribe(
       result=>{
@@ -68,6 +89,7 @@ export class AhorcadoComponent implements OnInit{
       }
     )
   }
+
   buscarPartida(){
     if(this.userService.getCurrentUser()!=null){
       this.url=this.socketService.getCurrentSocket()
@@ -105,6 +127,7 @@ export class AhorcadoComponent implements OnInit{
           this.comprobarTurno(data.body.jugadorTurno.nombre)
           this.mostrarPalabra('ahorcado-container-rival',this.partida.palabraVaciaRival)
           this.mostrarPalabra('ahorcado-container',this.partida.palabraVacia)
+
           let msg = {
             tipo : "INICIO PARTIDA",
             destinatario : data.body.players[0].nombre,
@@ -150,6 +173,7 @@ export class AhorcadoComponent implements OnInit{
         if(data.ganador==self.partida.rivalNombre){
           alert("hay ganador y no eres tu, loser")
           self.enPartida=false
+          self.restaurarValores()
           self.BuscarPartida=true
         }
         else if(data.ganador==self.partida.jugadorNombre){
@@ -157,6 +181,7 @@ export class AhorcadoComponent implements OnInit{
           self.ponerMala('malas-rival',data.letra)
           self.partida.vidasRival=self.partida.vidasRival-1
           self.enPartida=false
+          self.restaurarValores()
           self.BuscarPartida=true
         }
         else{
@@ -175,12 +200,14 @@ export class AhorcadoComponent implements OnInit{
           }
         }
       }
+
       if(data.tipo=="RESOLVER"){
         self.comprobarTurno(data.turno)
         if(data.ganador==self.partida.rivalNombre){
           self.mostrarPalabra('ahorcado-container-rival',data.palabra)
           alert("hay ganador y no eres tu, loser")
           self.enPartida=false
+          self.restaurarValores()
           self.BuscarPartida=true
         }
         else if(data.ganador==self.partida.jugadorNombre){
@@ -188,6 +215,7 @@ export class AhorcadoComponent implements OnInit{
           self.ponerMala('malas-rival',data.letra)
           self.partida.vidasRival=self.partida.vidasRival-1
           self.enPartida=false
+          self.restaurarValores()
           self.BuscarPartida=true
         }
         else{
@@ -230,6 +258,7 @@ export class AhorcadoComponent implements OnInit{
           this.mostrarPalabra('ahorcado-container',this.partida.palabraJugador)
           this.mostrarPalabra('ahorcado-container-rival',this.partida.palabraRival)
           this.enPartida=false
+          this.restaurarValores()
           this.BuscarPartida=true
         }
         let buena=false
@@ -272,6 +301,7 @@ export class AhorcadoComponent implements OnInit{
           alert("eres el ganador")
           this.mostrarPalabra('ahorcado-container',palabra)
           this.enPartida=false
+          this.restaurarValores()
           this.BuscarPartida=true
         }
         else if(data.body.ganador==this.partida.rivalNombre){
@@ -279,6 +309,7 @@ export class AhorcadoComponent implements OnInit{
           this.mostrarPalabra('ahorcado-container',palabra)
           this.mostrarPalabra('ahorcado-container-rival',this.partida.palabraRival)
           this.enPartida=false
+          this.restaurarValores()
           this.BuscarPartida=true
         }
         else{

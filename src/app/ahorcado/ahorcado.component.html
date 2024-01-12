@@ -1,41 +1,106 @@
 <!-- ahorcado.component.html -->
 <div class="game-container">
-    <div class="player">
-        <div *ngIf="inicioSesion==false" class="inicio-sesion">
-            <div>aun no has iniciado sesion</div>
-            <button (click)="iniciarSesionInvitado()">Iniciar sesion como invitado</button>
+    <div class="player-box">
+      <div class="player-b">
+          <div *ngIf="inicioSesion==false" class="inicio-sesion">
+              <div>Aún no has iniciado sesion</div>
+              <button (click)="iniciarSesionInvitado()">Iniciar sesion como invitado</button>
+          </div>
+        <img src="./assets/p1.png" alt="Imagen 1" class="icon-p1" />
+        <p class="player">{{this.partida.jugadorNombre}}<p>
+          <div class="contenedor-vidas">
+            <h1 *ngIf="inicioSesion">{{this.partida.vidas}} x </h1>
+            <img src="./assets/corazon.png" alt="Imagen 1" class="icon-vida1" />
+          </div>
+        <div class="ahorcado">
+
+          <div id="ahorcado-container"></div>
+
+          <div id="malas"></div>
+            <div class="input-poner">
+              <form *ngIf="this.partida.toca"  [formGroup]="letraForm" (ngSubmit)="onSubmit()" class="form-container">
+                <input class="input" type="text" formControlName="Letra" name="Letra" placeholder="Escribe una letra" maxlength="1" (input)="limitarCaracter($event)">
+                <button class="button-poner" type="submit">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+                  </svg>             
+                  <div class="text-poner">
+                    Poner
+                  </div>
+                </button>
+              </form>
+            </div>
+            <div class="input-poner">
+              <form *ngIf="this.partida.toca"  [formGroup]="resolverForm" (ngSubmit)="onSubmit2()">
+                <input class="input" type="text" formControlName="Palabra" name="Palabra" (input)="limitarCaracter2($event)" placeholder="Resolver palabra">
+                <button class="button-resolver" type="submit">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+                  </svg>             
+                  <div class="text">
+                    Resolver
+                  </div>
+                </button>
+              </form>
+            </div>
+          <div *ngIf="this.partida.toca==false" class="turno">No es tu turno</div>
         </div>
-        <h1 *ngIf="inicioSesion">Vidas: {{this.partida.vidas}}</h1>  
-      <h2>Jugador: {{this.partida.jugadorNombre}}</h2>
-      <div class="ahorcado">
-
-        <div id="ahorcado-container"></div>
-
-        <div id="malas"></div>
-        <form *ngIf="this.partida.toca"  [formGroup]="letraForm" (ngSubmit)="onSubmit()">
-          <input class="controls" type="text" formControlName="Letra" name="Letra">
-          <button class="login-btn" type="submit">Poner</button>
-        </form>
-        <form *ngIf="this.partida.toca"  [formGroup]="resolverForm" (ngSubmit)="onSubmit2()">
-          <input class="controls" type="text" formControlName="Palabra" name="Palabra">
-          <button class="login-btn" type="submit">Resolver</button>
-        </form>
-        <div *ngIf="this.partida.toca==false">No es tu turno, mamahuevo</div>
-      </div>
-      <button *ngIf="BuscarPartida" (click)="buscarPartida()" >Buscar Partida</button>
-      <button  *ngIf="enPartida" (click)="cancelarPartida()">Cancelar Partida</button>
+        <div class="btns-ahorcado">
+          <button *ngIf="BuscarPartida" (click)="buscarPartida()" class="btn-ahorcado">Buscar Partida</button>
+          <button  *ngIf="enPartida" (click)="cancelarPartida()" class="btn-ahorcado">Cancelar Partida</button>
+        </div>
+    </div>
     </div>
   
-    <div class="player">
-      <h1 *ngIf="inicioSesion">Vidas: {{this.partida.vidasRival}}</h1>
-      <h2>Jugador: {{this.partida.rivalNombre}}</h2>
-      <div class="ahorcado">
-        <div>{{this.partida.palabraRival}}</div>
-        <div id="ahorcado-container-rival"></div>
+    <div class="player-box">
+      <div class="player-b">
+        <img src="./assets/p2.png" alt="Imagen 2" class="icon-p2" />
+        <p class="player">{{this.partida.rivalNombre}}</p>
+        <div class="contenedor-vidas">
+          <h1 *ngIf="inicioSesion">{{this.partida.vidasRival}} x </h1>
+          <img src="./assets/corazon.png" alt="Imagen 2" class="icon-vida2" />
+        </div> 
+        <div class="ahorcado">
+          <div>{{this.partida.palabraRival}}</div>
+          <div id="ahorcado-container-rival" style="margin-top: 10px;"></div>
+          <div id="malas-rival"></div>
 
-        <div id="malas-rival"></div>
 
-        <img src="ahorcado_jugador2.png" alt="Ahorcado Jugador 2">
+
+          <div style="visibility: hidden;">
+            <div class="input-poner">
+              <form *ngIf="this.partida.toca"  [formGroup]="letraForm" (ngSubmit)="onSubmit()" class="form-container">
+                <input class="input" type="text" formControlName="Letra" name="Letra" maxlength="1" placeholder="Escribe una letra">
+                <button class="button-poner" type="submit">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+                  </svg>             
+                  <div class="text-poner">
+                    Poner
+                  </div>
+                </button>
+              </form>
+            </div>
+            <div class="input-poner">
+              <form *ngIf="this.partida.toca"  [formGroup]="resolverForm" (ngSubmit)="onSubmit2()">
+                <input class="input" type="text" formControlName="Palabra" name="Palabra">
+                <button class="button-resolver" type="submit">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+                  </svg>             
+                  <div class="text">
+                    Resolver
+                  </div>
+                </button>
+              </form>
+            </div>
+            <div *ngIf="this.partida.toca==false" class="turno">No es tu turno</div>
+            <div class="btns-ahorcado">
+              <button *ngIf="BuscarPartida" (click)="buscarPartida()" class="btn-ahorcado">Buscar Partida</button>
+              <button  *ngIf="enPartida" (click)="cancelarPartida()" class="btn-ahorcado">Cancelar Partida</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

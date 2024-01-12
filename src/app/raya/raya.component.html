@@ -2,9 +2,11 @@
   <div class="info-box">
     <img src="./assets/p1.png" alt="Imagen 1" class="icon-p1" />
     <p class="player">{{this.partida.jugadorNombre}}</p>
-    <h3 *ngIf="inicioSesion">
-      {{ this.partida.fichas }} x <img src="./assets/Ficha_azul.png" alt="Fichas" class="foto-ficha">
-    </h3>
+    <div class="fichas-container">
+      <h3 *ngIf="inicioSesion">
+        {{ this.partida.fichas }} x <img src="./assets/Ficha_azul.png" alt="Fichas" class="foto-ficha">
+      </h3>
+    </div>
     <p><span class="label-bold">Ciudad:</span> {{this.partida.ciudad}}</p>
     <p><span class="label-bold">Temperatura:</span> {{this.partida.tiempo}}</p>
     <p><span class="label-bold">Victorias:</span> {{this.partida.victorias}}</p>
@@ -34,9 +36,11 @@
     <div class="info-box">
       <img src="./assets/p2.png" alt="Imagen 2" class="icon-p2" />
       <h2>{{this.partida.rivalNombre}}</h2>
-      <h3 *ngIf="inicioSesion">
-        ? x <img src="./assets/Ficha_azul.png" alt="Fichas" class="foto-ficha">
-      </h3>
+      <div class="fichas-container">
+        <h3 *ngIf="inicioSesion">
+          ? x <img src="./assets/Ficha_azul.png" alt="Fichas" class="foto-ficha">
+        </h3>
+      </div>
       <p><span class="label-bold">Ciudad:</span> {{this.partida.ciudadRival}}</p>
       <p><span class="label-bold">Temperatura:</span> {{this.partida.tiempoRival}}</p>
       <p><span class="label-bold">Victorias:</span> {{this.partida.victoriasRival}}</p>

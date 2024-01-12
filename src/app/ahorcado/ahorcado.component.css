@@ -4,24 +4,243 @@
     justify-content: space-between;
   }
   
-  .player {
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #ecf0f1;
+  .player-box {
+    width: 350px;
+    background: #07182E;
+    position: relative;
+    display: flex;
     padding: 10px;
-    border-radius: 10px;
+    place-content: center;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 20px;
+  }
+
+  .player-b {
+    z-index: 1;
+    text-align: center;
   }
   
+  .player-box::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    background-image: linear-gradient(180deg, rgb(0, 183, 255), rgb(255, 48, 255));
+    height: 130%;
+    animation: rotBGimg 3s linear infinite;
+    transition: all 0.2s linear;
+  }
+  
+  @keyframes rotBGimg {
+    from {
+      transform: rotate(0deg);
+    }
+  
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .player-box::after {
+    content: '';
+    position: absolute;
+    background: #ecf0f1;
+    ;
+    inset: 5px;
+    border-radius: 15px;
+  }   
+
+  .input {
+    background-color: #212121;
+    max-width: 190px;
+    height: 20px;
+    padding: 10px;
+    /* text-align: center; */
+    border: 2px solid white;
+    border-radius: 5px;
+    margin-right: 8px;
+    /* box-shadow: 3px 3px 2px rgb(249, 255, 85); */
+  }
+
+  .button-poner {
+    background-color: #ffffff00;
+    color: #4169E1;
+    width: 8.5em;
+    height: 2.9em;
+    border: #3654ff 0.2em solid;
+    border-radius: 11px;
+    text-align: right;
+    transition: all 0.6s ease;
+  }
+  
+  .button-poner:hover {
+    background-color: #3654ff;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .button-poner svg {
+    width: 1.6em;
+    margin: -0.2em 0.1em 1em;
+    position: absolute;
+    display: flex;
+    transition: all 0.6s ease;
+  }
+  
+  .button-poner:hover svg {
+    transform: translateX(5px);
+  }
+
+  .button-resolver {
+    background-color: #ffffff00;
+    color: #4169E1;
+    width: 8.5em;
+    height: 2.9em;
+    border: #3654ff 0.2em solid;
+    border-radius: 11px;
+    text-align: right;
+    transition: all 0.6s ease;
+  }
+  
+  .button-resolver:hover {
+    background-color: #3654ff;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .button-resolver svg {
+    width: 1.6em;
+    margin: -0.2em 0.1em 1em;
+    position: absolute;
+    display: flex;
+    transition: all 0.6s ease;
+  }
+  
+  .button-resolver:hover svg {
+    transform: translateX(5px);
+  }
+  
+  .text {
+    margin: 0 1.5em
+  }
+
+  .text-poner {
+    margin: 0 2.3em;
+  }
+
+  .input-poner {
+    margin-top: 10px;
+    display: flex;
+  }
+
+  .form-container {
+      display: flex;
+      align-items: center; /* Alinea verticalmente los elementos */
+  }
+
+  .input:focus {
+    color: white;
+    font-weight: bold;
+    background-color: #212121;
+    outline-color: #4169E1;
+    box-shadow: -3px -3px 15px #4169E1;
+    transition: .1s;
+    transition-property: box-shadow;
+  }
+
+  .btns-ahorcado {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .player {
+    font-size: 18px;
+    color: red;
+    text-align: center;
+  }
+
+  .icon-vida1, .icon-vida2 {
+    width: 30px;
+    height: 30px;
+
+  }
+
+  .contenedor-vidas {
+    display: flex;
+    justify-content: center;
+  }
+
+  .icon-p1 {
+    width: 100%;
+  }
+
+  .icon-p2 {
+    width: 100%;
+  }
+  
+  .btn-ahorcado {
+    position: relative;
+    background-color: #4169E1;
+    border-radius: 5px;
+    box-shadow: #000080 0px 4px 0px 0px;
+    padding: 12px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    box-sizing: border-box;
+    width: 154px;
+    height: 49px;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    z-index: 1;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+
+  .btn-ahorcado::before {
+    content: "";
+    background-color: #87CEFA;
+    width: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: width 700ms ease-in-out;
+    display: inline-block;
+  }
+  
+  .btn-ahorcado:hover::before {
+    width: 100%;
+  }
 
   .ahorcado-container {
     display: flex;
+    font-size: 40px;
+    text-align: center;
   }
+
   .ahorcado-container-rival {
     display: flex;
+    margin-top: 20px;
   }
+
   .ahorcado {
     margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
   }
+
+  .turno {
+    color: orange;
+    font-size: medium;
+  }
+
+
+
 
   
   
