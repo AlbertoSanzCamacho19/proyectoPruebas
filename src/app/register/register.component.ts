@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { user } from '../user/user';
 import { UserService } from '../user.service';
 
@@ -18,7 +19,7 @@ export class RegisterComponent {
   passDiferente: boolean = false;
   flag: boolean = true;
 
-  constructor(private userService:UserService, private formBuilder:FormBuilder){
+  constructor(private userService:UserService, private formBuilder:FormBuilder, private router: Router){
 
     this.registerForm = this.formBuilder.group({
       Nombre:['',[Validators.required,Validators.minLength(5)]],
@@ -75,6 +76,8 @@ export class RegisterComponent {
             if (response === true) {
               this.respuestaOK=true;
               alert("Usuario registrado correctamente")
+              this.registerForm.reset();
+              this.router.navigate(['Login'])
               this.usuarioExiste=false;
             } else {
               this.respuestaOK=false;

@@ -14,6 +14,7 @@ import { ChatComponent } from './chat/chat.component';
 import { MenuComponent } from './menu/menu.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AhorcadoComponent } from './ahorcado/ahorcado.component';
+import { BorrarUsuarioComponent } from './borrar-usuario/borrar-usuario.component';
 
 
 
@@ -28,6 +29,7 @@ import { AhorcadoComponent } from './ahorcado/ahorcado.component';
     MenuComponent,
     CambioPasswordComponent,
     AhorcadoComponent,
+    BorrarUsuarioComponent,
    
   ],
   imports: [

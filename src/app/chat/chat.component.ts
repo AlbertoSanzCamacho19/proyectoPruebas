@@ -69,6 +69,10 @@ export class ChatComponent implements OnInit{
     }
   }
 
+  getMensajeClass(index: number): string {
+    return index % 2 === 0 ? 'even' : 'odd';
+  }
+
   onSubmit() {
     this.nuevoMensaje=this.mensajeForm.controls['mensaje'].value
     if (this.nuevoMensaje.trim() !== '') {
@@ -87,6 +91,10 @@ export class ChatComponent implements OnInit{
       this.mensajes=this.per[j].getMensajes()
       this.personaActual=this.per[j]
       this.nombre=this.per[j].getNombre()
+  }
+
+  onSendClick() {
+    this.onSubmit();
   }
 
 

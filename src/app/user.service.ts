@@ -38,6 +38,19 @@ export class UserService {
     return result;
   }
 
+  borrarUser(usuario:any):Observable<any> {
+    let info = {
+      id: usuario.id,
+      nombre: usuario.nombre,
+    }
+    var result = this.client.delete<any>("http://localhost:8080/users/borrarCuenta", {
+      body: info,
+      withCredentials: true,
+      observe: "response"
+    });
+    return result;
+  }
+
   sesion(usuario:any):Observable<any>{
     let info={
       email:usuario.email,
